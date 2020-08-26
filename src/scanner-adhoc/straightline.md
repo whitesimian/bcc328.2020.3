@@ -9,21 +9,21 @@
 - The sets of terminals and non-terminals are obtained from the rules.
 - The initial symbol is the non-terminal on the left side of the first production rule.
 
-Production rules                 
----------------------------------
-_Stm_ → _Stm_ `;` _Stm_          
-_Stm_ → `id` `:=` _Exp_          
+## Production rules
+
+_Stm_ → _Stm_ `;` _Stm_
+_Stm_ → `id` `:=` _Exp_
 _Stm_ → `print` `(` _ExpList_ `)`
-_Exp_ → `id`                     
-_Exp_ → `num`                    
-_Exp_ → _Exp_ _Binop_ _Exp_      
-_Exp_ → `(` _Stm_ `,` _Exp_ `)`  
-_ExpList_ → _Exp_                
-_ExpList_ → _Exp_ `,` _ExpList_  
-_Binop_ → `+`                    
-_Binop_ → `-`                    
-_Binop_ → `*`                    
-_Binop_ → `/`                    
+_Exp_ → `id`
+_Exp_ → `num`
+_Exp_ → _Exp_ _Binop_ _Exp_
+_Exp_ → `(` _Stm_ `,` _Exp_ `)`
+_ExpList_ → _Exp_
+_ExpList_ → _Exp_ `,` _ExpList_
+_Binop_ → `+`
+_Binop_ → `-`
+_Binop_ → `*`
+_Binop_ → `/`
 
 # Example
 
@@ -36,8 +36,8 @@ print(b)
 
 # Lexical symbols
 
-- Spaces, newlines, and tabulators are white spaces.
-- Comments starts with `#` and extends to the end of the line.
+- Spaces, newlines, and tabulators are **white spaces**.
+- **Comments** starts with `#` and extends to the end of the line.
 - A **numerical literal** is a sequence of one or more digits optionally followed another sequence of one or more digits.
 - An **identifier** is a sequence of one or more letters, digits and underscores, beginning with a letter, that is not a keyword.
 - The **keywords** are: `print`.
