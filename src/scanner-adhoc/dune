@@ -1,4 +1,4 @@
 (executable
-  (name scanner)
+  (name scanner-test)
   (flags
     (:standard -warn-error -A)))

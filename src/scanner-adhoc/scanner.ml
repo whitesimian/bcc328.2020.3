@@ -103,20 +103,3 @@ let rec get_token f =
         print_char x;
         print_newline ();
         get_token f
-
-let main () =
-  let channel =
-    if Array.length Sys.argv = 2 then
-      open_in Sys.argv.(1)
-    else
-      stdin
-  in
-  let rec go f =
-    let t = get_token f in
-    print_endline (string_of_token t);
-    if t <> TokEOF then
-      go f
-  in
-  go (scanner_buffer_from_channel channel)
-
-let _ = main ()
