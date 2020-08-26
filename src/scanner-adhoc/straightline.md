@@ -11,19 +11,19 @@
 
 ## Production rules
 
-_Stm_ → _Stm_ `;` _Stm_
-_Stm_ → `id` `:=` _Exp_
-_Stm_ → `print` `(` _ExpList_ `)`
-_Exp_ → `id`
-_Exp_ → `num`
-_Exp_ → _Exp_ _Binop_ _Exp_
-_Exp_ → `(` _Stm_ `,` _Exp_ `)`
-_ExpList_ → _Exp_
-_ExpList_ → _Exp_ `,` _ExpList_
-_Binop_ → `+`
-_Binop_ → `-`
-_Binop_ → `*`
-_Binop_ → `/`
+_Stm_ → _Stm_ `;` _Stm_  
+_Stm_ → `id` `:=` _Exp_  
+_Stm_ → `print` `(` _ExpList_ `)`  
+_Exp_ → `id`  
+_Exp_ → `num`  
+_Exp_ → _Exp_ _Binop_ _Exp_  
+_Exp_ → `(` _Stm_ `,` _Exp_ `)`  
+_ExpList_ → _Exp_  
+_ExpList_ → _Exp_ `,` _ExpList_  
+_Binop_ → `+`  
+_Binop_ → `-`  
+_Binop_ → `*`  
+_Binop_ → `/`  
 
 # Example
 
