@@ -1,0 +1,4 @@
+(executable
+  (name driver)
+  (libraries compiler)
+  (flags (:standard -warn-error -A)))
