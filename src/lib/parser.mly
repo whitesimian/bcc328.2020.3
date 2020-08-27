@@ -1,0 +1,9 @@
+// parser.mly
+
+%{
+
+%}
+
+%token                 EOF
+
+%%
