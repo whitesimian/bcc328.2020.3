@@ -11,6 +11,10 @@
     Error.error loc "illegal character '%c'" char
 }
 
+let spaces = [' ' '\t']+
+
 rule token = parse
-  | eof            { EOF }
-  | _              { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
+  | spaces            { token lexbuf }
+  | '\n'              { L.new_line lexbuf; token lexbuf }
+  | eof               { EOF }
+  | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
