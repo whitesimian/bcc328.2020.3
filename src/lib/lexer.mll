@@ -20,5 +20,11 @@ rule token = parse
   | digit+ as lxm     { LITINT (int_of_string lxm) }
   | "true"            { LITBOOL true }
   | "false"           { LITBOOL false }
+  | '+'               { PLUS }
+  | '-'               { MINUS }
+  | '*'               { TIMES }
+  | '/'               { DIV }
+  | '('               { LPAREN }
+  | ')'               { RPAREN }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
