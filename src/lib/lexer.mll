@@ -13,6 +13,7 @@
 
 let spaces = [' ' '\t']+
 let digit = ['0'-'9']
+let letters = ['a'-'z']
 
 rule token = parse
   | spaces            { token lexbuf }
@@ -20,5 +21,6 @@ rule token = parse
   | digit+ as lxm     { LITINT (int_of_string lxm) }
   | "true"            { LITBOOL true }
   | "false"           { LITBOOL false }
+  | letters+ as lts   { LITSTRING lts}
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
