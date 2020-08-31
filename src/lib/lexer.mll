@@ -12,9 +12,11 @@
 }
 
 let spaces = [' ' '\t']+
+let digit = ['0'-'9']
 
 rule token = parse
   | spaces            { token lexbuf }
   | '\n'              { L.new_line lexbuf; token lexbuf }
+  | digit+ as lxm     { LITINT (int_of_string lxm) }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
