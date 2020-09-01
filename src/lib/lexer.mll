@@ -13,12 +13,14 @@
 
 let spaces = [' ' '\t']+
 let digit = ['0'-'9']
-let float = digit+['.']digit*(['e' 'E'](['+' '-']?)digit+)? | digit+(['e' 'E'](['+' '-']?)digit+)
+let sNotation = ['e' 'E'](['+' '-']?)digit+
+let float = digit+['.']digit+
+let real = float(sNotation)? | digit+sNotation
 
 rule token = parse
   | spaces            { token lexbuf }
   | '\n'              { L.new_line lexbuf; token lexbuf }
-  | float as lxm      { LITREAL (float_of_string lxm) }
+  | real as lxm       { LITREAL (float_of_string lxm) }
   | digit+ as lxm     { LITINT (int_of_string lxm) }
   | "true"            { LITBOOL true }
   | "false"           { LITBOOL false }
