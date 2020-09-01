@@ -144,7 +144,7 @@ let%expect_test _ =
     :1.5-1.5 Parser.EOF |}];
 
   (* operators *)
-  scan_string "+ - * / % ^ = <> > >= < <= & | :=";
+  scan_string "+ - * / % ^ = <> > >= < <= && || :=";
   [%expect{|
     :1.0-1.1 Parser.PLUS
     :1.2-1.3 Parser.MINUS
