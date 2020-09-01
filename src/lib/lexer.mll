@@ -20,5 +20,16 @@ rule token = parse
   | digit+ as lxm     { LITINT (int_of_string lxm) }
   | "true"            { LITBOOL true }
   | "false"           { LITBOOL false }
+  | "{#"              { read_comment 0 lexbuf}
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
+
+and read_comment nested_count = parse
+  | "{#"  { read_comment (nested_count+1) lexbuf }
+  | "#}"  { if nested_count = 0 then
+              token lexbuf
+            else
+              read_comment (nested_count-1) lexbuf
+          }
+  | eof   { Error.error (Location.curr_loc lexbuf) "unterminated comment" }
+  | _     { read_comment nested_count lexbuf }
