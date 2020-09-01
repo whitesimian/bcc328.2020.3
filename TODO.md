@@ -8,7 +8,7 @@
    - [x] integer literals (Romildo - PR)
    - [ ] real literals
    - [ ] string literals
-   - [ ] operators
+   - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
    - [ ] keyworkds
    
@@ -20,6 +20,6 @@
    - [ ] integer literals
    - [ ] real literals
    - [ ] string literals
-   - [ ] operators
+   - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
    - [ ] keyworkds
