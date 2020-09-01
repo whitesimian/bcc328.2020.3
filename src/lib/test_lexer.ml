@@ -158,10 +158,10 @@ let%expect_test _ =
     :1.19-1.21 Parser.GE
     :1.22-1.23 Parser.LT
     :1.24-1.26 Parser.LE
-    :1.27-1.28 Parser.AND
-    :1.29-1.30 Parser.OR
-    :1.31-1.33 Parser.ASSIGN
-    :1.33-1.33 Parser.EOF |}];
+    :1.27-1.29 Parser.AND
+    :1.30-1.32 Parser.OR
+    :1.33-1.35 Parser.ASSIGN
+    :1.35-1.35 Parser.EOF |}];
 
   (* punctuation *)
   scan_string "( ) , ; :";
