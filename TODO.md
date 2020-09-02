@@ -1,5 +1,11 @@
 # TODO
 
+Here are most of the topics needed in the compiler impletantion for this project.
+
+Check the topics as they are implemented, anotating who is the implementer, in the pull request implementing them.
+
+Significant contributions to the implementation will be used to assign a grade to students at the end of the course.
+
 - Lexical rules
    - [x] spaces (Romildo)
    - [ ] line comments
@@ -25,3 +31,66 @@
    - [ ] punctuation symbols
    - [ ] keyworkds
    - [x] identifiers (Felipe)
+
+- Abstract syntax trees
+   - Expressions
+     - [x] boolean constant
+     - [x] integer constant
+     - [ ] real constant
+     - [ ] string constant
+     - [ ] variable
+     - [ ] unary operation
+     - [ ] binary operation
+     - [ ] assignment
+     - [ ] function call
+     - [ ] if
+     - [x] while
+     - [ ] break
+     - [ ] let
+     - [ ] sequence
+   - Variables
+     - [ ] simple variable
+   - Declarations
+     - [ ] variable
+
+- Parser
+   - Expressions
+     - [x] boolean constant
+     - [x] integer constant
+     - [ ] real constant
+     - [ ] string constant
+     - [ ] variable
+     - [ ] unary operation
+     - [ ] binary operation
+     - [ ] assignment
+     - [ ] function call
+     - [ ] if
+     - [x] while
+     - [ ] break
+     - [ ] let
+     - [ ] sequence
+   - Variables
+     - [ ] simple variable
+   - Declarations
+     - [ ] variable
+
+- Parser tests
+   - Expressions
+     - [ ] boolean constant
+     - [ ] integer constant
+     - [ ] real constant
+     - [ ] string constant
+     - [ ] variable
+     - [ ] unary operation
+     - [ ] binary operation
+     - [ ] assignment
+     - [ ] function call
+     - [ ] if
+     - [ ] while
+     - [ ] break
+     - [ ] let
+     - [ ] sequence
+   - Variables
+     - [ ] simple variable
+   - Declarations
+     - [ ] variable
