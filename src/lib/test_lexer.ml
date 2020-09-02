@@ -62,19 +62,19 @@ let%expect_test _ =
            :1.24-1.24 Parser.EOF |}];
 
   (* real literals *)
-  scan_string "123.4567 105. .34 1.e234 .23E+5 765e-180 -1.2 +2.1";
+  scan_string "123.4567 105.0 0.34 1e234 0.23E+5 765e-180 -1.2 +2.1";
   [%expect{|
-    :1.0-1.8 (Parser.REAL 123.4567)
-    :1.9-1.13 (Parser.REAL 105.)
-    :1.14-1.17 (Parser.REAL 0.34)
-    :1.18-1.24 (Parser.REAL 1e+234)
-    :1.25-1.31 (Parser.REAL 23000.)
-    :1.32-1.40 (Parser.REAL 7.65e-178)
-    :1.41-1.42 Parser.MINUS
-    :1.42-1.45 (Parser.REAL 1.2)
-    :1.46-1.47 Parser.PLUS
-    :1.47-1.50 (Parser.REAL 2.1)
-    :1.50-1.50 Parser.EOF |}];
+    :1.0-1.8 (Parser.LITREAL 123.4567)
+    :1.9-1.14 (Parser.LITREAL 105.)
+    :1.15-1.19 (Parser.LITREAL 0.34)
+    :1.20-1.25 (Parser.LITREAL 1e+234)
+    :1.26-1.33 (Parser.LITREAL 23000.)
+    :1.34-1.42 (Parser.LITREAL 7.65e-178)
+    :1.43-1.44 Parser.MINUS
+    :1.44-1.47 (Parser.LITREAL 1.2)
+    :1.48-1.49 Parser.PLUS
+    :1.49-1.52 (Parser.LITREAL 2.1)
+    :1.52-1.52 Parser.EOF |}];
 
   (* string literals *)
   scan_string {tigris|"a string literal" "another one"|tigris};

@@ -6,7 +6,7 @@
    - [ ] block comments
    - [x] boolean literals (Romildo)
    - [x] integer literals (Romildo)
-   - [ ] real literals
+   - [x] real literals
    - [ ] string literals
    - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
@@ -19,7 +19,7 @@
    - [x] block comments
    - [x] boolean literals
    - [x] integer literals
-   - [ ] real literals
+   - [x] real literals
    - [ ] string literals
    - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols

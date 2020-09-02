@@ -14,8 +14,8 @@
 let spaces = [' ' '\t']+
 let digit = ['0'-'9']
 let integer = digit+
-let exponent = ['e' 'E'](['+' '-']?)integer
-let real = integer('.'integer(exponent)? | exponent)
+let exponent = ['e' 'E'] ['+' '-']? integer
+let real = integer ('.' integer exponent? | exponent)
 
 rule token = parse
   | spaces            { token lexbuf }
