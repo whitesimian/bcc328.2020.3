@@ -26,6 +26,11 @@
 %token                 ASSIGN
 %token                 WHILE
 %token                 DO
+%token                 LPAREN
+%token                 RPAREN
+%token                 COMMA
+%token                 SEMI
+%token                 COLON
 
 %start <Absyn.exp> program
 
