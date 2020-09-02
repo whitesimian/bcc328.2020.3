@@ -9,6 +9,8 @@
 
   let illegal_character loc char =
     Error.error loc "illegal character '%c'" char
+
+  let comment_begin = ref L.dummy_pos
 }
 
 let spaces = [' ' '\t']+
@@ -24,6 +26,7 @@ rule token = parse
   | integer as lxm    { LITINT (int_of_string lxm) }
   | "true"            { LITBOOL true }
   | "false"           { LITBOOL false }
+  | "{#"              { comment_begin := L.lexeme_start_p lexbuf; read_comment 0 lexbuf }
   | "+"               { PLUS }
   | "-"               { MINUS }
   | "*"               { TIMES }
@@ -43,3 +46,14 @@ rule token = parse
   | "do"              { DO }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
+
+and read_comment nested_count = parse
+  | "{#"  { read_comment (nested_count+1) lexbuf }
+  | "#}"  { if nested_count = 0 then
+              token lexbuf
+            else
+              read_comment (nested_count-1) lexbuf
+          }
+  | '\n'  { L.new_line lexbuf; read_comment nested_count lexbuf }
+  | eof   { Error.error (!comment_begin, L.lexeme_end_p lexbuf) "unterminated comment" }
+  | _     { read_comment nested_count lexbuf }
