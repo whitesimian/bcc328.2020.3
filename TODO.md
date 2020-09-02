@@ -1,25 +1,27 @@
 # TODO
 
 - Lexical rules
-   - [x] spaces (Romildo - PR)
+   - [x] spaces (Romildo)
    - [ ] line comments
    - [ ] block comments
-   - [x] boolean literals (Romildo - PR)
-   - [x] integer literals (Romildo - PR)
-   - [ ] real literals
+   - [x] boolean literals (Romildo)
+   - [x] integer literals (Romildo)
+   - [x] real literals (Fabricio - PR#16)
    - [ ] string literals
-   - [ ] operators
+   - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
    - [ ] keyworkds
+   - [ ] identifiers
    
-- Lexical tests
-   - [ ] spaces
-   - [ ] line comments
-   - [ ] block comments
-   - [ ] boolean literals
-   - [ ] integer literals
-   - [ ] real literals
+- Lexer tests
+   - [x] spaces
+   - [x] line comments
+   - [x] block comments
+   - [x] boolean literals
+   - [x] integer literals
+   - [x] real literals (Fabricio - PR#16)
    - [ ] string literals
-   - [ ] operators
+   - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
    - [ ] keyworkds
+   - [ ] identifiers
