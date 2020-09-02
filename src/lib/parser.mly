@@ -29,7 +29,7 @@
 %token                 LPAREN
 %token                 RPAREN
 %token                 COMMA
-%token                 SEMICOLON
+%token                 SEMI
 %token                 COLON
 
 %start <Absyn.exp> program
