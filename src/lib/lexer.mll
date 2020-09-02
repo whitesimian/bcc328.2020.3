@@ -23,11 +23,11 @@ let id = ['a'-'z''A'-'Z']['0'-'9''a'-'z''A'-'Z''_']*
 rule token = parse
   | spaces            { token lexbuf }
   | '\n'              { L.new_line lexbuf; token lexbuf }
+  | "{#"              { comment_begin := L.lexeme_start_p lexbuf; read_comment 0 lexbuf }
   | real as lxm       { LITREAL (float_of_string lxm) }
   | integer as lxm    { LITINT (int_of_string lxm) }
   | "true"            { LITBOOL true }
   | "false"           { LITBOOL false }
-  | "{#"              { comment_begin := L.lexeme_start_p lexbuf; read_comment 0 lexbuf }
   | "+"               { PLUS }
   | "-"               { MINUS }
   | "*"               { TIMES }
@@ -43,16 +43,21 @@ rule token = parse
   | "&&"              { AND }
   | "||"              { OR }
   | ":="              { ASSIGN }
-  | "while"           { WHILE }
-  | "do"              { DO }
-  | "var"             { VAR }
-  | "if"              { IF }
-  | "then"            { THEN }
-  | "else"            { ELSE }
+  | '('               { LPAREN }
+  | ')'               { RPAREN }
+  | ','               { COMMA }
+  | ';'               { SEMI }
+  | ':'               { COLON }
   | "break"           { BREAK }
-  | "let"             { LET }
-  | "in"              { IN }
+  | "do"              { DO }
+  | "else"            { ELSE }
   | "end"             { END }
+  | "if"              { IF }
+  | "in"              { IN }
+  | "let"             { LET }
+  | "then"            { THEN }
+  | "var"             { VAR }
+  | "while"           { WHILE }
   | id as lxm         { ID (Symbol.symbol lxm) }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }

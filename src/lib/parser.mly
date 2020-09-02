@@ -25,9 +25,21 @@
 %token                 AND
 %token                 OR
 %token                 ASSIGN
-%token                 WHILE
+%token                 LPAREN
+%token                 RPAREN
+%token                 COMMA
+%token                 SEMI
+%token                 COLON
+%token                 BREAK
 %token                 DO
-%token                 VAR IF THEN ELSE BREAK LET IN END    
+%token                 ELSE
+%token                 END
+%token                 IF
+%token                 IN
+%token                 LET
+%token                 THEN
+%token                 VAR
+%token                 WHILE
 
 %start <Absyn.exp> program
 
