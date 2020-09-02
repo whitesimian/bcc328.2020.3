@@ -9,7 +9,7 @@
    - [x] real literals (Fabricio - PR#16)
    - [ ] string literals
    - [x] operators (Koda - PR #26)
-   - [x] punctuation symbols (Arilton - PR#34)
+   - [x] punctuation symbols (Arilton - PR#34, Artur-PR#15)
    - [x] keyworkds (Felipe - PR#36)
    - [x] identifiers (Felipe - PR#36)
    
