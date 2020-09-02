@@ -45,36 +45,36 @@ let%expect_test _ =
   (* logic literals *)
   scan_string "true false";
   [%expect{|
-    :1.0-1.4 (Parser.LOGIC true)
-    :1.5-1.10 (Parser.LOGIC false)
+    :1.0-1.4 (Parser.LITBOOL true)
+    :1.5-1.10 (Parser.LITBOOL false)
     :1.10-1.10 Parser.EOF |}];
 
   (* integer literals *)
   scan_string "0 139015 007 -4324 +2019";
   [%expect{|
-           :1.0-1.1 (Parser.INTEGER 0)
-           :1.2-1.8 (Parser.INTEGER 139015)
-           :1.9-1.12 (Parser.INTEGER 7)
+           :1.0-1.1 (Parser.LITINT 0)
+           :1.2-1.8 (Parser.LITINT 139015)
+           :1.9-1.12 (Parser.LITINT 7)
            :1.13-1.14 Parser.MINUS
-           :1.14-1.18 (Parser.INTEGER 4324)
+           :1.14-1.18 (Parser.LITINT 4324)
            :1.19-1.20 Parser.PLUS
-           :1.20-1.24 (Parser.INTEGER 2019)
+           :1.20-1.24 (Parser.LITINT 2019)
            :1.24-1.24 Parser.EOF |}];
 
   (* real literals *)
-  scan_string "123.4567 105. .34 1.e234 .23E+5 765e-180 -1.2 +2.1";
+  scan_string "123.4567 105.0 0.34 1e234 0.23E+5 765e-180 -1.2 +2.1";
   [%expect{|
-    :1.0-1.8 (Parser.REAL 123.4567)
-    :1.9-1.13 (Parser.REAL 105.)
-    :1.14-1.17 (Parser.REAL 0.34)
-    :1.18-1.24 (Parser.REAL 1e+234)
-    :1.25-1.31 (Parser.REAL 23000.)
-    :1.32-1.40 (Parser.REAL 7.65e-178)
-    :1.41-1.42 Parser.MINUS
-    :1.42-1.45 (Parser.REAL 1.2)
-    :1.46-1.47 Parser.PLUS
-    :1.47-1.50 (Parser.REAL 2.1)
-    :1.50-1.50 Parser.EOF |}];
+    :1.0-1.8 (Parser.LITREAL 123.4567)
+    :1.9-1.14 (Parser.LITREAL 105.)
+    :1.15-1.19 (Parser.LITREAL 0.34)
+    :1.20-1.25 (Parser.LITREAL 1e+234)
+    :1.26-1.33 (Parser.LITREAL 23000.)
+    :1.34-1.42 (Parser.LITREAL 7.65e-178)
+    :1.43-1.44 Parser.MINUS
+    :1.44-1.47 (Parser.LITREAL 1.2)
+    :1.48-1.49 Parser.PLUS
+    :1.49-1.52 (Parser.LITREAL 2.1)
+    :1.52-1.52 Parser.EOF |}];
 
   (* string literals *)
   scan_string {tigris|"a string literal" "another one"|tigris};
@@ -121,11 +121,12 @@ let%expect_test _ =
     :1.42-1.42 Parser.EOF |}];
 
   (* identifiers *)
-  scan_string "height alpha_301_coord";
+  scan_string "height alpha_301_coord b3teugeuse__";
   [%expect{|
     :1.0-1.6 (Parser.ID "height")
     :1.7-1.22 (Parser.ID "alpha_301_coord")
-    :1.22-1.22 Parser.EOF |}];
+    :1.23-1.35 (Parser.ID "b3teugeuse__")
+    :1.35-1.35 Parser.EOF |}];
 
   scan_string "first-name";
   [%expect{|
@@ -139,12 +140,12 @@ let%expect_test _ =
 
   scan_string "34rua";
   [%expect{|
-    :1.0-1.2 (Parser.INTEGER 34)
+    :1.0-1.2 (Parser.LITINT 34)
     :1.2-1.5 (Parser.ID "rua")
     :1.5-1.5 Parser.EOF |}];
 
   (* operators *)
-  scan_string "+ - * / % ^ = <> > >= < <= & | :=";
+  scan_string "+ - * / % ^ = <> > >= < <= && || :=";
   [%expect{|
     :1.0-1.1 Parser.PLUS
     :1.2-1.3 Parser.MINUS
@@ -158,10 +159,10 @@ let%expect_test _ =
     :1.19-1.21 Parser.GE
     :1.22-1.23 Parser.LT
     :1.24-1.26 Parser.LE
-    :1.27-1.28 Parser.AND
-    :1.29-1.30 Parser.OR
-    :1.31-1.33 Parser.ASSIGN
-    :1.33-1.33 Parser.EOF |}];
+    :1.27-1.29 Parser.AND
+    :1.30-1.32 Parser.OR
+    :1.33-1.35 Parser.ASSIGN
+    :1.35-1.35 Parser.EOF |}];
 
   (* punctuation *)
   scan_string "( ) , ; :";
