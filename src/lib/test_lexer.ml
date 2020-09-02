@@ -45,20 +45,20 @@ let%expect_test _ =
   (* logic literals *)
   scan_string "true false";
   [%expect{|
-    :1.0-1.4 (Parser.LOGIC true)
-    :1.5-1.10 (Parser.LOGIC false)
+    :1.0-1.4 (Parser.LITBOOL true)
+    :1.5-1.10 (Parser.LITBOOL false)
     :1.10-1.10 Parser.EOF |}];
 
   (* integer literals *)
   scan_string "0 139015 007 -4324 +2019";
   [%expect{|
-           :1.0-1.1 (Parser.INTEGER 0)
-           :1.2-1.8 (Parser.INTEGER 139015)
-           :1.9-1.12 (Parser.INTEGER 7)
+           :1.0-1.1 (Parser.LITINT 0)
+           :1.2-1.8 (Parser.LITINT 139015)
+           :1.9-1.12 (Parser.LITINT 7)
            :1.13-1.14 Parser.MINUS
-           :1.14-1.18 (Parser.INTEGER 4324)
+           :1.14-1.18 (Parser.LITINT 4324)
            :1.19-1.20 Parser.PLUS
-           :1.20-1.24 (Parser.INTEGER 2019)
+           :1.20-1.24 (Parser.LITINT 2019)
            :1.24-1.24 Parser.EOF |}];
 
   (* real literals *)
@@ -139,12 +139,12 @@ let%expect_test _ =
 
   scan_string "34rua";
   [%expect{|
-    :1.0-1.2 (Parser.INTEGER 34)
+    :1.0-1.2 (Parser.LITINT 34)
     :1.2-1.5 (Parser.ID "rua")
     :1.5-1.5 Parser.EOF |}];
 
   (* operators *)
-  scan_string "+ - * / % ^ = <> > >= < <= & | :=";
+  scan_string "+ - * / % ^ = <> > >= < <= && || :=";
   [%expect{|
     :1.0-1.1 Parser.PLUS
     :1.2-1.3 Parser.MINUS
@@ -158,10 +158,10 @@ let%expect_test _ =
     :1.19-1.21 Parser.GE
     :1.22-1.23 Parser.LT
     :1.24-1.26 Parser.LE
-    :1.27-1.28 Parser.AND
-    :1.29-1.30 Parser.OR
-    :1.31-1.33 Parser.ASSIGN
-    :1.33-1.33 Parser.EOF |}];
+    :1.27-1.29 Parser.AND
+    :1.30-1.32 Parser.OR
+    :1.33-1.35 Parser.ASSIGN
+    :1.35-1.35 Parser.EOF |}];
 
   (* punctuation *)
   scan_string "( ) , ; :";
