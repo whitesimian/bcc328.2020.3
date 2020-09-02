@@ -7,6 +7,8 @@
 %token                 EOF
 %token <int>           LITINT
 %token <bool>          LITBOOL
+%token <float>         LITREAL
+
 %token                 PLUS
 %token                 MINUS
 %token                 TIMES
