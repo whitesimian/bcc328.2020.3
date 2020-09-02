@@ -44,6 +44,11 @@ rule token = parse
   | ":="              { ASSIGN }
   | "while"           { WHILE }
   | "do"              { DO }
+  | '('               { LPAREN }
+  | ')'               { RPAREN }
+  | ','               { COMMA }
+  | ';'               { SEMICOLON }
+  | ':'               { COLON }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
 
