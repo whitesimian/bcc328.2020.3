@@ -121,11 +121,12 @@ let%expect_test _ =
     :1.42-1.42 Parser.EOF |}];
 
   (* identifiers *)
-  scan_string "height alpha_301_coord";
+  scan_string "height alpha_301_coord b3teugeuse__";
   [%expect{|
     :1.0-1.6 (Parser.ID "height")
     :1.7-1.22 (Parser.ID "alpha_301_coord")
-    :1.22-1.22 Parser.EOF |}];
+    :1.23-1.35 (Parser.ID "b3teugeuse__")
+    :1.35-1.35 Parser.EOF |}];
 
   scan_string "first-name";
   [%expect{|
