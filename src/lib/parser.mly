@@ -5,8 +5,8 @@
 %}
 
 %token                 EOF
-%token <int>           LITINT
 %token <bool>          LITBOOL
+%token <int>           LITINT
 %token <float>         LITREAL
 %token <Symbol.symbol> ID
 
@@ -49,8 +49,8 @@ program:
 | e=exp EOF            {e}
 
 exp:
-| x=LITINT             {IntExp x}
 | x=LITBOOL            {BoolExp x}
+| x=LITINT             {IntExp x}
 | WHILE t=exp DO b=exp {WhileExp (t, b)}
 | BREAK                {BreakExp}
 
