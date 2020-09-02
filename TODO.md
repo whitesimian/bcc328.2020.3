@@ -3,7 +3,7 @@
 - Lexical rules
    - [x] spaces (Romildo)
    - [ ] line comments
-   - [ ] block comments
+   - [x] block comments (RodrigoJuliano - PR#18)
    - [x] boolean literals (Romildo)
    - [x] integer literals (Romildo)
    - [x] real literals (Fabricio - PR#16)
