@@ -35,5 +35,7 @@ rule token = parse
   | "&&"              { AND }
   | "||"              { OR }
   | ":="              { ASSIGN }
+  | "while"           { WHILE }
+  | "do"              { DO }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }

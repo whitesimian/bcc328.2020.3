@@ -25,10 +25,15 @@ let main () =
 
   (* print the tokens *)
   try
-    scan lexbuf
+    (* scan lexbuf *)
+    let ast = Parser.program Lexer.token lexbuf in
+    Format.printf "%s\n" (Absyn.show_exp ast)
   with
   | Error.Error (loc, msg) ->
      Format.printf "%a error: %s\n" Location.pp_location loc msg;
      exit 1
+  | Parser.Error ->
+     Format.printf "%a error: syntax\n" Location.pp_position lexbuf.Lexing.lex_curr_p;
+     exit 2
 
 let () = main ()
