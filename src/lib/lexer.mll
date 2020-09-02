@@ -18,6 +18,7 @@ let digit = ['0'-'9']
 let integer = digit+
 let exponent = ['e' 'E'] ['+' '-']? integer
 let real = integer ('.' integer exponent? | exponent)
+let id = ['a'-'z''A'-'Z']['0'-'9''a'-'z''A'-'Z''_']*
 
 rule token = parse
   | spaces            { token lexbuf }
@@ -44,6 +45,15 @@ rule token = parse
   | ":="              { ASSIGN }
   | "while"           { WHILE }
   | "do"              { DO }
+  | "var"             { VAR }
+  | "if"              { IF }
+  | "then"            { THEN }
+  | "else"            { ELSE }
+  | "break"           { BREAK }
+  | "let"             { LET }
+  | "in"              { IN }
+  | "end"             { END }
+  | id as lxm         { ID (Symbol.symbol lxm) }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
 

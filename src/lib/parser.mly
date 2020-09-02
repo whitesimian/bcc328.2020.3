@@ -8,6 +8,7 @@
 %token <int>           LITINT
 %token <bool>          LITBOOL
 %token <float>         LITREAL
+%token <Symbol.symbol> ID
 
 %token                 PLUS
 %token                 MINUS
@@ -26,6 +27,7 @@
 %token                 ASSIGN
 %token                 WHILE
 %token                 DO
+%token                 VAR IF THEN ELSE BREAK LET IN END    
 
 %start <Absyn.exp> program
 

@@ -10,8 +10,8 @@
    - [ ] string literals
    - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
-   - [ ] keyworkds
-   - [ ] identifiers
+   - [x] keyworkds (Felipe)
+   - [x] identifiers (Felipe)
    
 - Lexer tests
    - [x] spaces
@@ -24,4 +24,4 @@
    - [x] operators (Koda - PR #26)
    - [ ] punctuation symbols
    - [ ] keyworkds
-   - [ ] identifiers
+   - [x] identifiers (Felipe)
