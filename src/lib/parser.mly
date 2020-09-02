@@ -51,6 +51,6 @@ program:
 exp:
 | x=LITBOOL            {BoolExp x}
 | x=LITINT             {IntExp x}
+| x=LITREAL            {RealExp x}
 | WHILE t=exp DO b=exp {WhileExp (t, b)}
 | BREAK                {BreakExp}
-

@@ -36,7 +36,7 @@ Significant contributions to the implementation will be used to assign a grade t
    - Expressions
      - [x] boolean constant
      - [x] integer constant
-     - [ ] real constant
+     - [x] real constant (Romildo)
      - [ ] string constant
      - [ ] variable
      - [ ] unary operation
@@ -57,7 +57,7 @@ Significant contributions to the implementation will be used to assign a grade t
    - Expressions
      - [x] boolean constant
      - [x] integer constant
-     - [ ] real constant
+     - [x] real constant (Romildo)
      - [ ] string constant
      - [ ] variable
      - [ ] unary operation
