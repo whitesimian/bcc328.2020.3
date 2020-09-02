@@ -52,3 +52,5 @@ exp:
 | x=LITINT             {IntExp x}
 | x=LITBOOL            {BoolExp x}
 | WHILE t=exp DO b=exp {WhileExp (t, b)}
+| BREAK                {BreakExp}
+

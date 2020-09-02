@@ -45,7 +45,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] function call
      - [ ] if
      - [x] while
-     - [ ] break
+     - [x] break (Romildo)
      - [ ] let
      - [ ] sequence
    - Variables
@@ -66,7 +66,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] function call
      - [ ] if
      - [x] while
-     - [ ] break
+     - [x] break (Romildo)
      - [ ] let
      - [ ] sequence
    - Variables
