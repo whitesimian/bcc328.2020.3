@@ -41,7 +41,7 @@
 %token                 VAR
 %token                 WHILE
 
-%start <Absyn.exp> program
+%start <Absyn.lexp> program
 
 %%
 
@@ -49,8 +49,8 @@ program:
 | e=exp EOF            {e}
 
 exp:
-| x=LITBOOL            {BoolExp x}
-| x=LITINT             {IntExp x}
-| x=LITREAL            {RealExp x}
-| WHILE t=exp DO b=exp {WhileExp (t, b)}
-| BREAK                {BreakExp}
+| x=LITBOOL            {$loc, BoolExp x}
+| x=LITINT             {$loc, IntExp x}
+| x=LITREAL            {$loc, RealExp x}
+| WHILE t=exp DO b=exp {$loc, WhileExp (t, b)}
+| BREAK                {$loc, BreakExp}
