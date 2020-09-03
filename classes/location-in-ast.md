@@ -1,6 +1,6 @@
 # Associando uma localização a uma árvore sintática
 
-A **localaização** de uma frase no código fonte é necessária para **reportagem de erros**.
+A **localização** de uma frase no código fonte é necessária para **reportagem de erros**.
 
 ## Versão do compilador
 
@@ -15,16 +15,16 @@ Esta aula baseia-a na versão [v0.2](https://github.com/romildo/bcc328.2020.3/re
 - Usamos um **tipo parametrizado** que permite a anotação da localização de um valor de qualquer tipo
   ``` ocaml
   (* no módulo Location *)
-  type `a loc = t * `a
+  type 'a loc = t * 'a
   ```
   - `Location.loc` é um construtor de tipo que precisa de um parâmetro de tipo
-  - A variável de tipo `` `a`` representa um tipo qualquer do OCaml
+  - A variável de tipo `'a` representa um tipo qualquer do OCaml
   - `Location.t` é o tipo de uma localização
 
 - Exemplos:
   ``` ocaml
-  Exp.exp Location.loc        (* tipo das expressões anotadas com uma localização *)
-  Symbol.symbol Location.loc  (* tipo dos símbolos anotados com uma localização *)
+  Absyn.exp Location.loc        (* tipo das expressões anotadas com uma localização *)
+  Symbol.symbol Location.loc    (* tipo dos símbolos anotados com uma localização *)
   ```
 
 - A maioria dos componentes internos de uma árvore sintática deverão ter sua localização anotada
@@ -35,6 +35,7 @@ Esta aula baseia-a na versão [v0.2](https://github.com/romildo/bcc328.2020.3/re
     type exp =
         | BoolExp   of bool
         | IntExp    of int
+        | RealExp   of float
         | WhileExp  of (exp * exp)
         | BreakExp
     ```
@@ -43,6 +44,7 @@ Esta aula baseia-a na versão [v0.2](https://github.com/romildo/bcc328.2020.3/re
     type exp =
         | BoolExp   of bool
         | IntExp    of int
+        | RealExp   of float
         | WhileExp  of (lexp * lexp)  (* observe o uso de lexp ao invés de exp *)
         | BreakExp
 
@@ -70,8 +72,8 @@ Esta aula baseia-a na versão [v0.2](https://github.com/romildo/bcc328.2020.3/re
 - Ao construir a árvore sintática, precisamos obter a localização da frase no programa fonte.
 
 - O menhir oferece algumas [palavra-chaves](http://gallium.inria.fr/~fpottier/menhir/manual.html#sec%3Apositions) que dão acesso a informações de localização:
-  - `%startpos` é a posição do início do primeiro símbolo no lado direito da regra de produção.
-  - `%endpos` é a posição do final do último símbolo no lado direito da regra de produção.
+  - `$startpos` é a posição do início do primeiro símbolo no lado direito da regra de produção.
+  - `$endpos` é a posição do final do último símbolo no lado direito da regra de produção.
   - `$loc` é o par `($startpos, $endpos)`
 
 - Então podemos obter uma árvore sintática anotada com sua localização usando:
