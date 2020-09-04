@@ -28,11 +28,11 @@ Significant contributions to the implementation will be used to assign a grade t
    - [x] real literals (Fabricio - PR#16)
    - [ ] string literals
    - [x] operators (Koda - PR #26)
-   - [ ] punctuation symbols
-   - [ ] keyworkds
+   - [x] punctuation symbols
+   - [x] keyworkds
    - [x] identifiers (Felipe)
 
-- Abstract syntax trees
+- Abstract syntax trees (representation)
    - Expressions
      - [x] boolean constant
      - [x] integer constant
@@ -53,7 +53,7 @@ Significant contributions to the implementation will be used to assign a grade t
    - Declarations
      - [ ] variable
 
-- Parser
+- Conversion from abstract syntax tree to generic tree
    - Expressions
      - [x] boolean constant
      - [x] integer constant
@@ -74,7 +74,28 @@ Significant contributions to the implementation will be used to assign a grade t
    - Declarations
      - [ ] variable
 
-- Parser tests
+- Parser (production rules)
+   - Expressions
+     - [x] boolean constant
+     - [x] integer constant
+     - [x] real constant (Romildo)
+     - [ ] string constant
+     - [ ] variable
+     - [ ] unary operation
+     - [ ] binary operation
+     - [ ] assignment
+     - [ ] function call
+     - [ ] if
+     - [x] while
+     - [x] break (Romildo)
+     - [ ] let
+     - [ ] sequence
+   - Variables
+     - [ ] simple variable
+   - Declarations
+     - [ ] variable
+
+- Parser tests (expects tests for the parser)
    - Expressions
      - [ ] boolean constant
      - [ ] integer constant
