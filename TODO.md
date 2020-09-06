@@ -49,9 +49,9 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] let
      - [ ] sequence
    - Variables
-     - [ ] simple variable
+     - [x] simple variable (Felipe)
    - Declarations
-     - [ ] variable
+     - [x] variable (Felipe* - Falta sequência de declarações)
 
 - Conversion from abstract syntax tree to generic tree
    - Expressions
@@ -70,9 +70,9 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] let
      - [ ] sequence
    - Variables
-     - [ ] simple variable
+     - [x] simple variable (Felipe)
    - Declarations
-     - [ ] variable
+     - [x] variable (Felipe*)
 
 - Parser (production rules)
    - Expressions
@@ -91,9 +91,9 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] let
      - [ ] sequence
    - Variables
-     - [ ] simple variable
+     - [x] simple variable (Felipe)
    - Declarations
-     - [ ] variable
+     - [x] variable (Felipe*)
 
 - Parser tests (expects tests for the parser)
    - Expressions

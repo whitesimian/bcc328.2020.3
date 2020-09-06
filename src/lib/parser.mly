@@ -78,3 +78,10 @@ exp:
 | l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
+
+svar:
+| VAR x=ID             { x }
+
+decvar:
+| x=svar EQ e=exp                    { DecVar (x, None, e) }
+| x=svar COLON t=option(ID) EQ e=exp { DecVar (x, t, e) }
