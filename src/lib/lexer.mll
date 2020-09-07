@@ -11,6 +11,19 @@
     Error.error loc "illegal character '%c'" char
 
   let comment_begin = ref L.dummy_pos
+
+  let append_char str ch =
+    str ^ (String.make 1 (Char.chr ch))
+
+  let str_incr_linenum str lexbuf =
+    String.iter (function '\n' -> L.new_line lexbuf | _ -> ()) str
+
+  let illegal_escape loc sequence =
+    Error.error loc "illegal escape sequence: %s" sequence
+
+  let unterminated_string loc =
+    Error.error loc "unterminated string"
+
 }
 
 let spaces = [' ' '\t']+
@@ -60,6 +73,7 @@ rule token = parse
   | "var"             { VAR }
   | "while"           { WHILE }
   | id as lxm         { ID (Symbol.symbol lxm) }
+  | '"'               { stringRule lexbuf.L.lex_start_p "" lexbuf }
   | eof               { EOF }
   | _                 { illegal_character (Location.curr_loc lexbuf) (L.lexeme_char lexbuf 0) }
 
@@ -73,3 +87,30 @@ and read_comment nested_count = parse
   | '\n'  { L.new_line lexbuf; read_comment nested_count lexbuf }
   | eof   { Error.error (!comment_begin, L.lexeme_end_p lexbuf) "unterminated comment" }
   | _     { read_comment nested_count lexbuf }
+
+and stringRule pos buf = parse
+  | '"'                               { lexbuf.L.lex_start_p <- pos;
+                                        LITSTRING buf
+                                      }
+  | "\\n"                             { stringRule pos (buf ^ "\n") lexbuf }
+  | "\\t"                             { stringRule pos (buf ^ "\t") lexbuf }
+  | "\\\""                            { stringRule pos (buf ^ "\"") lexbuf }
+  | "\\\\"                            { stringRule pos (buf ^ "\\") lexbuf }
+  | "\\^" (['@' 'A'-'Z'] as x)        { stringRule pos (append_char buf (Char.code x - Char.code '@')) lexbuf }
+  | "\\^" (['a'-'z'] as x)            { stringRule pos (append_char buf (Char.code x - Char.code 'a' + 1)) lexbuf }
+  | "\\" (digit digit digit as x)     { stringRule pos (append_char buf (int_of_string x)) lexbuf }
+  | "\\" ([' ' '\t' '\n']+ as x) "\\" { str_incr_linenum x lexbuf;
+                                        stringRule pos buf lexbuf
+                                      }
+  | "\\" ([' ' '\t' '\n']+ as x) "\\" { str_incr_linenum x lexbuf;
+                                        stringRule pos buf lexbuf
+                                      }
+  | "\\" _ as x                       { illegal_escape (lexbuf.L.lex_start_p, lexbuf.L.lex_curr_p) x;
+                                        stringRule pos buf lexbuf
+                                      }
+  | [^ '\\' '"']+ as x                { str_incr_linenum x lexbuf;
+                                        stringRule pos (buf ^ x) lexbuf
+                                      }
+  | eof                               { unterminated_string (pos, lexbuf.L.lex_start_p);
+                                        token lexbuf
+                                      }

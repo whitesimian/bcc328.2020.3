@@ -61,6 +61,7 @@ program:
 exp:
 | x=LITBOOL                               {$loc, BoolExp x}
 | x=LITINT                                {$loc, IntExp x}
+| x=LITSTRING                             {$loc, StringExp x}
 | x=LITREAL                               {$loc, RealExp x}
 | MINUS e=exp             %prec UMINUS    {$loc, NegativeExp e}
 | l=exp PLUS r=exp                        {$loc, BinaryExp (l, Plus, r)}
