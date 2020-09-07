@@ -29,6 +29,8 @@ let stringfy_op op =
   | GreaterEqual  -> ">="
   | LowerThan     -> "<"
   | LowerEqual    -> "<="
+  | And           -> "&&"
+  | Or            -> "||"
 
 (* Convert an expression to a generic tree *)
 let rec tree_of_exp exp =

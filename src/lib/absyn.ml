@@ -26,5 +26,6 @@ and binary_op =
   | GreaterEqual
   | LowerThan
   | LowerEqual
+  | And
+  | Or
   [@@deriving show]
-  

@@ -42,11 +42,13 @@
 %token                 WHILE
 %token                 UMINUS
 
-%left EQ NE GT GE LT LE
-%left PLUS MINUS
-%left TIMES DIV MOD
-%right POW
-%nonassoc UMINUS
+%right      OR
+%right      AND
+%left       EQ NE GT GE LT LE
+%left       PLUS MINUS
+%left       TIMES DIV MOD
+%right      POW
+%nonassoc   UMINUS
 
 %start <Absyn.lexp> program
 
@@ -72,5 +74,7 @@ exp:
 | l=exp GE r=exp                          {$loc, BinaryExp (l, GreaterEqual, r)}
 | l=exp LT r=exp                          {$loc, BinaryExp (l, LowerThan, r)}
 | l=exp LE r=exp                          {$loc, BinaryExp (l, LowerEqual, r)}
+| l=exp AND r=exp                         {$loc, BinaryExp (l, And, r)}
+| l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
