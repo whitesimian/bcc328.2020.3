@@ -78,7 +78,7 @@ exp:
 | l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
-| x=var                                   {$loc, VarExp x}
+| VAR x=var                               {$loc, VarExp x}
 | LET x=list(dec) IN e=exp                {$loc, LetExp (x, e)}
 
 var:
