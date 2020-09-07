@@ -20,4 +20,11 @@ and binary_op =
   | Div
   | Mod
   | Power
+  | Equal
+  | NotEqual
+  | GreaterThan
+  | GreaterEqual
+  | LowerThan
+  | LowerEqual
   [@@deriving show]
+  
