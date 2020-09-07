@@ -42,12 +42,12 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
-     - [ ] function call
+     - [x] function call   (Artur)
      - [ ] if
      - [x] while
      - [x] break (Romildo)
      - [ ] let
-     - [ ] sequence
+     - [] sequence
    - Variables
      - [ ] simple variable
    - Declarations
@@ -63,12 +63,12 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
-     - [ ] function call
+     - [x] function call  (Artur)
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [ ] let
-     - [ ] sequence
+     - [] let
+     - [] sequence
    - Variables
      - [ ] simple variable
    - Declarations
@@ -84,7 +84,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
-     - [ ] function call
+     - [x] function call   (Artur)
      - [ ] if
      - [x] while
      - [x] break (Romildo)
