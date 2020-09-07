@@ -90,6 +90,3 @@ dec:
 optionaltype:
 | ot=option(COLON t=ID {t})               {ot}
 
-(* decvar:
-| x=svar EQ e=exp                         { DecVar (x, None, e) }
-| x=svar COLON t=option(ID) EQ e=exp      { DecVar (x, t, e) } *)

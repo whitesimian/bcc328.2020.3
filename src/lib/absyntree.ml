@@ -44,12 +44,6 @@ let rec tree_of_exp exp =
   | BreakExp                  -> mktr "BreakExp" []
   | VarExp x                  -> mktr "VarExp" [tree_of_lvar x]
   | LetExp (d, e)             -> mktr "LetExp" [mktr "Decs" (List.map tree_of_ldec d); tree_of_lexp e]
- (* | SVarExp (x, _)            -> mktr (sprintf "SVarExp %s" x) []
-  | DecVar (x, y, z)          -> mktr "DecVar" (match y with None -> [mktr (match x with (a, _) -> sprintf "SVarExp %s" a ) [];
-                                                                     tree_of_lexp z]
-                                                          | Some (s, _) ->[mktr (match x with (a, _) -> sprintf "SVarExp %s" a ) [];
-                                                                          mktr (sprintf "%s" s) [];
-                                                                          tree_of_lexp z]) *)
 
 and tree_of_var var =
   match var with
