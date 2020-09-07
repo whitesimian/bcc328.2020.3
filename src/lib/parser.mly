@@ -40,6 +40,11 @@
 %token                 THEN
 %token                 VAR
 %token                 WHILE
+%token                 UMINUS
+
+%left PLUS MINUS
+%left TIMES DIV MOD
+%right POW
 
 %start <Absyn.lexp> program
 
@@ -52,7 +57,7 @@ exp:
 | x=LITBOOL            {$loc, BoolExp x}
 | x=LITINT             {$loc, IntExp x}
 | x=LITREAL            {$loc, RealExp x}
-| MINUS e=exp          {$loc, NegativeExp e}
+| MINUS e=exp          %prec UMINUS {$loc, NegativeExp e}
 | l=exp PLUS r=exp     {$loc, BinaryExp (l, Plus, r)}
 | l=exp MINUS r=exp    {$loc, BinaryExp (l, Minus, r)}
 | l=exp TIMES r=exp    {$loc, BinaryExp (l, Times, r)}
