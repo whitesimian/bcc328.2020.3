@@ -39,8 +39,8 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] real constant (Romildo)
      - [ ] string constant
      - [ ] variable
-     - [ ] unary operation
-     - [ ] binary operation
+     - [x] unary operation  (Fabricio - PR #53)
+     - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
      - [ ] function call
      - [ ] if
@@ -60,8 +60,8 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] real constant (Romildo)
      - [ ] string constant
      - [ ] variable
-     - [ ] unary operation
-     - [ ] binary operation
+     - [x] unary operation  (Fabricio - PR #53)
+     - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
      - [ ] function call
      - [ ] if
@@ -81,8 +81,8 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] real constant (Romildo)
      - [ ] string constant
      - [ ] variable
-     - [ ] unary operation
-     - [ ] binary operation
+     - [x] unary operation  (Fabricio - PR #53)
+     - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
      - [ ] function call
      - [ ] if
