@@ -53,11 +53,11 @@ exp:
 | x=LITINT             {$loc, IntExp x}
 | x=LITREAL            {$loc, RealExp x}
 | MINUS e=exp          {$loc, NegativeExp e}
-| l=exp PLUS r=exp     {$loc, PlusExp (l, r)}
-| l=exp MINUS r=exp    {$loc, MinusExp (l, r)}
-| l=exp TIMES r=exp    {$loc, TimesExp (l, r)}
-| l=exp DIV r=exp      {$loc, DivExp (l, r)}
-| l=exp MOD r=exp      {$loc, ModExp (l, r)}
-| l=exp POW r=exp      {$loc, PowExp (l, r)}
+| l=exp PLUS r=exp     {$loc, BinaryExp (l, Plus, r)}
+| l=exp MINUS r=exp    {$loc, BinaryExp (l, Minus, r)}
+| l=exp TIMES r=exp    {$loc, BinaryExp (l, Times, r)}
+| l=exp DIV r=exp      {$loc, BinaryExp (l, Div, r)}
+| l=exp MOD r=exp      {$loc, BinaryExp (l, Mod, r)}
+| l=exp POW r=exp      {$loc, BinaryExp (l, Power, r)}
 | WHILE t=exp DO b=exp {$loc, WhileExp (t, b)}
 | BREAK                {$loc, BreakExp}
