@@ -47,15 +47,18 @@ let rec tree_of_exp exp =
 
 and tree_of_var var =
   match var with
-  | SimpleVar x                -> mktr (sprintf "SimpleVar %s" (Symbol.name x)) []
+  | SimpleVar x               -> mktr (sprintf "SimpleVar %s" (Symbol.name x)) []
 
 and tree_of_dec dec =
   match dec with
-  | VarDec (x, y, z)           -> mktr "VarDec" (match y with | None -> [mktr (sprintf "%s" (Symbol.name x)) [];
-                                                                          tree_of_lexp z]
-                                                              | Some (s, _) -> [mktr (sprintf "%s" (Symbol.name x) ) [];
-                                                                          mktr (sprintf "%s" s) []; 
-                                                                          tree_of_lexp z])
+  | VarDec (x, y, z)          -> mktr "VarDec" [mktr (sprintf "%s" (Symbol.name x)) [];
+                                                 tree_of_option mktr y;
+                                                 tree_of_lexp z]
+
+and tree_of_option f opt =
+  match opt with
+          | None              -> mktr "" []
+          | Some v            -> f (sprintf "%s" (Symbol.name v)) []
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
