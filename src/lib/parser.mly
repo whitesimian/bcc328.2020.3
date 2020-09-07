@@ -78,9 +78,9 @@ exp:
 | l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
-| f=ID LPAREN p=option_exps RPAREN			  {$loc, CallExp (f, p)} 
+| f=ID LPAREN p=ext_list RPAREN			      {$loc, CallExp (f, p)} 
 
-
-option_exps: (* parâmetros da chamada de função*)
- | opt=separated_list(COMMA,e=exp {e})   {opt}
+(* parâmetro para chamada de função*)
+ext_list: 
+ | opt=separated_list(COMMA, e=exp {e})   {opt}
 
