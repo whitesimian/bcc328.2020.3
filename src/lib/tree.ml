@@ -1,13 +1,19 @@
 (* tree.ml *)
 
-type 'a tree = Tree of 'a * 'a tree list
+type 'a tree =
+  | Empty
+  | Node of 'a * 'a tree list
 [@@deriving show]
 
-let mkt x ts = Tree (x, ts)
+let empty = Empty
+
+let mkt x ts = Node (x, ts)
 
 
-let rec map f (Tree (info, children)) =
-  Tree (f info, List.map (map f) children)
+let rec map f = function
+  | Empty -> Empty
+  | Node (info, children) ->
+     Node (f info, List.map (map f) children)
 
 
 let string_of_tree t =
@@ -26,8 +32,9 @@ let string_of_tree t =
       | []      -> ()
     in
     function
-      | Tree (x,children) -> Buffer.add_string buf x;
-                             children_to_string children
+    | Empty -> Buffer.add_string buf "▹"
+    | Node (x,children) -> Buffer.add_string buf x;
+                           children_to_string children
   in
   to_string "" t;
   Buffer.contents buf
@@ -35,15 +42,24 @@ let string_of_tree t =
 
 let asy_of_tree t =
   let buf = Buffer.create 256 in
-  let rec go root k (Tree (x,ts)) =
-    let name = if root = "" then "node" else root ^ "_" ^ string_of_int k in
-    Buffer.add_string buf
-      (Printf.sprintf "TreeNode %s = nodeGM(%s\"%s\"%s);\n"
-         name
-         (if root = "" then "" else root ^ ", ")
-         x
-         "");
-    ignore (List.fold_left (fun n t -> go name n t; n+1) 1 ts)
+  let rec go root k = function
+    | Empty -> (* NEEDS TESTING *)
+       let name = if root = "" then "node" else root ^ "_" ^ string_of_int k in
+       Buffer.add_string buf
+         (Printf.sprintf "TreeNode %s = nodeGM(%s\"%s\"%s);\n"
+            name
+            (if root = "" then "" else root ^ ", ")
+            "▿"
+            "")
+    | Node (x,ts) ->
+       let name = if root = "" then "node" else root ^ "_" ^ string_of_int k in
+       Buffer.add_string buf
+         (Printf.sprintf "TreeNode %s = nodeGM(%s\"%s\"%s);\n"
+            name
+            (if root = "" then "" else root ^ ", ")
+            x
+            "");
+       ignore (List.fold_left (fun n t -> go name n t; n+1) 1 ts)
   in
   go "" 0 t;
   Printf.sprintf
@@ -64,16 +80,19 @@ let asy_of_tree t =
 
 let dot_of_tree name t =
   let buf = Buffer.create 256 in
-  let rec go name (Tree (x,ts)) =
-    Buffer.add_string buf (Printf.sprintf "%s [label=\"%s\"];\n" name x);
-    ignore (List.fold_left
-              (fun n t ->
-                let name' = name ^ "_" ^ string_of_int n in
-                go name' t;
-                Buffer.add_string buf (Printf.sprintf "%s -> %s [arrowhead=none];\n" name name');
-                n+1)
-              1
-              ts)
+  let rec go name = function
+    | Empty ->
+       Buffer.add_string buf (Printf.sprintf "%s [label=\"%s\"];\n" name "▿")
+    | Node (x,ts) ->
+       Buffer.add_string buf (Printf.sprintf "%s [label=\"%s\"];\n" name x);
+       ignore (List.fold_left
+                 (fun n t ->
+                   let name' = name ^ "_" ^ string_of_int n in
+                   go name' t;
+                   Buffer.add_string buf (Printf.sprintf "%s -> %s [arrowhead=none];\n" name name');
+                   n+1)
+                 1
+                 ts)
   in
   go "n" t;
   Printf.sprintf
@@ -98,5 +117,6 @@ let box_node x =
   Box.frame (Box.line (str_replace ':' '\n' x))
 
 let rec box_of_tree = function
-  | Tree (x,[]) -> box_node x
-  | Tree (x,ts) -> Box.connect (box_node x) (List.map box_of_tree ts)
+  | Empty -> Box.line "▿"
+  | Node (x,[]) -> box_node x
+  | Node (x,ts) -> Box.connect (box_node x) (List.map box_of_tree ts)
