@@ -27,3 +27,8 @@ dune-project
 
 # emacs backup files
 *~
+
+README.html
+TODO.html
+
+.vscode/
