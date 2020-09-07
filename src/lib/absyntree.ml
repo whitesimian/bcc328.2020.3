@@ -42,12 +42,31 @@ let rec tree_of_exp exp =
   | BinaryExp (l, op, r)      -> mktr (sprintf "BinaryOp %s" (stringfy_op op)) [tree_of_lexp l; tree_of_lexp r]
   | WhileExp (t, b)           -> mktr "WhileExp" [tree_of_lexp t; tree_of_lexp b]
   | BreakExp                  -> mktr "BreakExp" []
-  | SVarExp (x, _)            -> mktr (sprintf "SVarExp %s" x) []
+  | VarExp x                  -> mktr "VarExp" [tree_of_lvar x]
+  | LetExp (d, e)             -> mktr "LetExp" [mktr "Decs" (List.map tree_of_ldec d); tree_of_lexp e]
+ (* | SVarExp (x, _)            -> mktr (sprintf "SVarExp %s" x) []
   | DecVar (x, y, z)          -> mktr "DecVar" (match y with None -> [mktr (match x with (a, _) -> sprintf "SVarExp %s" a ) [];
                                                                      tree_of_lexp z]
                                                           | Some (s, _) ->[mktr (match x with (a, _) -> sprintf "SVarExp %s" a ) [];
                                                                           mktr (sprintf "%s" s) [];
+                                                                          tree_of_lexp z]) *)
+
+and tree_of_var var =
+  match var with
+  | SimpleVar x                -> mktr (sprintf "SimpleVar %s" (Symbol.name x)) []
+
+and tree_of_dec dec =
+  match dec with
+  | VarDec (x, y, z)           -> mktr "VarDec" (match y with | None -> [mktr (sprintf "%s" (Symbol.name x)) [];
+                                                                          tree_of_lexp z]
+                                                              | Some (s, _) -> [mktr (sprintf "%s" (Symbol.name x) ) [];
+                                                                          mktr (sprintf "%s" s) []; 
                                                                           tree_of_lexp z])
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
+
+and tree_of_lvar (_, x) = tree_of_var x
+
+and tree_of_ldec (_, x) = tree_of_dec x
+

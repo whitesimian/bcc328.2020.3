@@ -8,8 +8,8 @@ type exp =
   | BinaryExp     of (lexp * binary_op * lexp)
   | WhileExp      of (lexp * lexp)
   | BreakExp
-  | SVarExp   of Symbol.symbol
-  | DecVar    of Symbol.symbol * (Symbol.symbol option) * lexp
+  | VarExp        of lvar
+  | LetExp        of ldec list * lexp
   [@@deriving show]
 
 and lexp = exp Location.loc  (* exp anotated with a location *)
@@ -30,4 +30,17 @@ and binary_op =
   | LowerEqual
   | And
   | Or
+  [@@deriving show]
+
+and var =
+  | SimpleVar     of Symbol.symbol  
+  [@@deriving show]
+
+and lvar = var Location.loc
+  [@@deriving show]
+
+and dec =
+  | VarDec        of Symbol.symbol * Symbol.symbol option * lexp
+
+and ldec = dec Location.loc
   [@@deriving show]

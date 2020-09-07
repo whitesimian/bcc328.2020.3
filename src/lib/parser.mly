@@ -42,13 +42,13 @@
 %token                 WHILE
 %token                 UMINUS
 
-%right      OR
-%right      AND
-%left       EQ NE GT GE LT LE
-%left       PLUS MINUS
-%left       TIMES DIV MOD
-%right      POW
-%nonassoc   UMINUS
+%right                 OR
+%right                 AND
+%left                  EQ NE GT GE LT LE
+%left                  PLUS MINUS
+%left                  TIMES DIV MOD
+%right                 POW
+%nonassoc              UMINUS
 
 %start <Absyn.lexp> program
 
@@ -78,10 +78,18 @@ exp:
 | l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
+| x=var                                   {$loc, VarExp x}
+| LET x=list(dec) IN e=exp                {$loc, LetExp (x, e)}
 
-svar:
-| VAR x=ID             { x }
+var:
+| x=ID                                    {$loc, SimpleVar x }
 
-decvar:
-| x=svar EQ e=exp                    { DecVar (x, None, e) }
-| x=svar COLON t=option(ID) EQ e=exp { DecVar (x, t, e) }
+dec:
+| VAR x=ID  t=optionaltype EQ e=exp       {$loc, VarDec (x, t, e) }
+
+optionaltype:
+| ot=option(COLON t=ID {t})               {ot}
+
+(* decvar:
+| x=svar EQ e=exp                         { DecVar (x, None, e) }
+| x=svar COLON t=option(ID) EQ e=exp      { DecVar (x, t, e) } *)
