@@ -3,6 +3,7 @@
 type exp =
   | BoolExp       of bool
   | IntExp        of int
+  | StringExp     of string
   | RealExp       of float
   | NegativeExp   of lexp
   | BinaryExp     of (lexp * binary_op * lexp)

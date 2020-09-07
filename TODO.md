@@ -13,7 +13,7 @@ Significant contributions to the implementation will be used to assign a grade t
    - [x] boolean literals (Romildo)
    - [x] integer literals (Romildo)
    - [x] real literals (Fabricio - PR#16)
-   - [ ] string literals
+   - [x] string literals (Gabriel - PR #14)
    - [x] operators (Koda - PR #26)
    - [x] punctuation symbols (Arilton - PR#34, Artur-PR#15)
    - [x] keyworkds (Felipe - PR#36)
@@ -37,7 +37,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] boolean constant
      - [x] integer constant
      - [x] real constant (Romildo)
-     - [ ] string constant
+     - [x] string constant (Gabriel - PR #14)
      - [ ] variable
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
@@ -58,7 +58,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] boolean constant
      - [x] integer constant
      - [x] real constant (Romildo)
-     - [ ] string constant
+     - [x] string constant (Gabriel - PR #14)
      - [ ] variable
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
@@ -79,7 +79,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] boolean constant
      - [x] integer constant
      - [x] real constant (Romildo)
-     - [ ] string constant
+     - [x] string constant (Gabriel - PR #14)
      - [ ] variable
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
