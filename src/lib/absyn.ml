@@ -8,6 +8,7 @@ type exp =
   | BinaryExp     of (lexp * binary_op * lexp)
   | WhileExp      of (lexp * lexp)
   | BreakExp
+  | ExpSeq        of lexp list
   [@@deriving show]
 
 and lexp = exp Location.loc  (* exp anotated with a location *)

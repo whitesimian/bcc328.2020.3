@@ -78,3 +78,6 @@ exp:
 | l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
+| LPAREN es=exp_seq RPAREN                {$loc, ExpSeq es}
+
+exp_seq: es=separated_list(SEMI, exp)     {es}

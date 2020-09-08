@@ -42,6 +42,7 @@ let rec tree_of_exp exp =
   | BinaryExp (l, op, r)      -> mktr (sprintf "BinaryOp %s" (stringfy_op op)) [tree_of_lexp l; tree_of_lexp r]
   | WhileExp (t, b)           -> mktr "WhileExp" [tree_of_lexp t; tree_of_lexp b]
   | BreakExp                  -> mktr "BreakExp" []
+  | ExpSeq seq                -> mktr "ExpSeq" (List.map tree_of_lexp seq)
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
