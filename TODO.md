@@ -43,7 +43,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
      - [x] function call   (Artur - PR #57)
-     - [ ] if
+     - [x] if (Koda - PR #61)
      - [x] while
      - [x] break (Romildo)
      - [x] let (Felipe)
@@ -64,7 +64,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
      - [x] function call  (Artur - PR #57)
-     - [ ] if
+     - [x] if (Koda - PR #61)
      - [x] while
      - [x] break (Romildo)
      - [x] let (Felipe - PR #55)
@@ -85,7 +85,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
      - [x] function call   (Artur - PR #57)
-     - [ ] if
+     - [x] if (Koda - PR #61)
      - [x] while
      - [x] break (Romildo)
      - [x] let (Felipe - PR #55)
