@@ -41,13 +41,13 @@
 %token                 WHILE
 %token                 UMINUS
 
-%right      OR
-%right      AND
-%left       EQ NE GT GE LT LE
-%left       PLUS MINUS
-%left       TIMES DIV MOD
-%right      POW
-%nonassoc   UMINUS
+%right                 OR
+%right                 AND
+%left                  EQ NE GT GE LT LE
+%left                  PLUS MINUS
+%left                  TIMES DIV MOD
+%right                 POW
+%nonassoc              UMINUS
 
 %start <Absyn.lexp> program
 
@@ -79,6 +79,8 @@ exp:
 | BREAK                                   {$loc, BreakExp}
 | f=ID LPAREN p=exp_list RPAREN			      {$loc, CallExp (f, p)} 
 | LPAREN es=exp_seq RPAREN                {$loc, ExpSeq es}
+| x=var                                   {$loc, VarExp x}
+| LET d=list(dec) IN e=exp                {$loc, LetExp (d, e)}
 
 (* semicolon separted sequence of expressions *)
 exp_seq:
@@ -87,3 +89,14 @@ exp_seq:
 (* function call arguments *)
 exp_list: 
 | opt=separated_list(COMMA, exp)          {opt}
+
+(* variables *)
+var:
+| x=ID                                    {$loc, SimpleVar x}
+
+(* declarations *)
+dec:
+| VAR x=ID  t=optional_type EQ e=exp      {$loc, VarDec (x, t, e)}
+
+optional_type:
+| ot=option(COLON t=ID {t})               {ot}

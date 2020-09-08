@@ -46,12 +46,12 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [ ] let
+     - [x] let (Felipe)
      - [x] sequence (RodrigoJuliano #PR60)
    - Variables
-     - [ ] simple variable
+     - [x] simple (Felipe - PR #55)
    - Declarations
-     - [ ] variable
+     - [x] variable (Felipe - PR #55)
 
 - Conversion from abstract syntax tree to generic tree
    - Expressions
@@ -67,12 +67,12 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [ ] let
+     - [x] let (Felipe - PR #55)
      - [x] sequence (RodrigoJuliano #PR60)
    - Variables
-     - [ ] simple variable
+     - [x] simple variable (Felipe - PR #55)
    - Declarations
-     - [ ] variable
+     - [x] variable (Felipe - PR #55)
 
 - Parser (production rules)
    - Expressions
@@ -88,12 +88,12 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [ ] let
+     - [x] let (Felipe - PR #55)
      - [x] sequence (RodrigoJuliano #PR60)
    - Variables
-     - [ ] simple variable
+     - [x] simple variable (Felipe - PR #55)
    - Declarations
-     - [ ] variable
+     - [x] variable (Felipe - PR #55)
 
 - Parser tests (expects tests for the parser)
    - Expressions
