@@ -47,7 +47,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] while
      - [x] break (Romildo)
      - [ ] let
-     - [] sequence
+     - [x] sequence (RodrigoJuliano #PR60)
    - Variables
      - [ ] simple variable
    - Declarations
@@ -67,8 +67,8 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [] let
-     - [] sequence
+     - [ ] let
+     - [x] sequence (RodrigoJuliano #PR60)
    - Variables
      - [ ] simple variable
    - Declarations
@@ -89,7 +89,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] while
      - [x] break (Romildo)
      - [ ] let
-     - [ ] sequence
+     - [x] sequence (RodrigoJuliano #PR60)
    - Variables
      - [ ] simple variable
    - Declarations

@@ -9,7 +9,6 @@
 %token <int>           LITINT
 %token <float>         LITREAL
 %token <Symbol.symbol> ID
-
 %token                 PLUS
 %token                 MINUS
 %token                 TIMES
@@ -79,8 +78,12 @@ exp:
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
 | f=ID LPAREN p=exp_list RPAREN			      {$loc, CallExp (f, p)} 
+| LPAREN es=exp_seq RPAREN                {$loc, ExpSeq es}
+
+(* semicolon separted sequence of expressions *)
+exp_seq:
+| es=separated_list(SEMI, exp)            {es}
 
 (* function call arguments *)
 exp_list: 
-| opt=separated_list(COMMA, e=exp {e})   {opt}
-
+| opt=separated_list(COMMA, exp)          {opt}
