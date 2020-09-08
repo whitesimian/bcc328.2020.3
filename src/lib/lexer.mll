@@ -94,10 +94,10 @@ and stringRule pos buf = parse
                                       }
   | "\\n"                             { stringRule pos (buf ^ "\n") lexbuf }
   | "\\t"                             { stringRule pos (buf ^ "\t") lexbuf }
+  | "\\r"                             { stringRule pos (buf ^ "\r") lexbuf }
+  | "\\b"                             { stringRule pos (buf ^ "\b") lexbuf }
   | "\\\""                            { stringRule pos (buf ^ "\"") lexbuf }
   | "\\\\"                            { stringRule pos (buf ^ "\\") lexbuf }
-  | "\\^" (['@' 'A'-'Z'] as x)        { stringRule pos (append_char buf (Char.code x - Char.code '@')) lexbuf }
-  | "\\^" (['a'-'z'] as x)            { stringRule pos (append_char buf (Char.code x - Char.code 'a' + 1)) lexbuf }
   | "\\" (digit digit digit as x)     { stringRule pos (append_char buf (int_of_string x)) lexbuf }
   | "\\" ([' ' '\t' '\n']+ as x) "\\" { str_incr_linenum x lexbuf;
                                         stringRule pos buf lexbuf
