@@ -45,8 +45,23 @@ let stringfy_op op =
   | And           -> "&&"
   | Or            -> "||"
 
+(* Convert an ast with a type annotation to a generic tree *)
+let tree_of_typed conversion_function (ast, ty_opt) =
+  let tree = conversion_function ast in
+  match !ty_opt with
+  | None -> tree
+  | Some ty ->
+     let s = Type.show_ty ty in
+     match tree with
+     | Tree.Empty -> Tree.Node ([""; s], [])
+     | Tree.Node (x, children) ->
+        Tree.Node (List.append x [s], children)
+
 (* Convert an expression to a generic tree *)
 let rec tree_of_exp exp =
+  tree_of_typed tree_of_exp_basic exp
+
+and tree_of_exp_basic exp =
   match exp with
   | BoolExp x                 -> mktr (sprintf "BoolExp %b" x) []
   | IntExp x                  -> mktr (sprintf "IntExp %i" x) []
@@ -64,14 +79,17 @@ let rec tree_of_exp exp =
 
 and tree_of_var var =
   match var with
-  | SimpleVar x               -> mktr (sprintf "SimpleVar %s" (Symbol.name x)) []
+  | SimpleVar x -> mktr (sprintf "SimpleVar %s" (Symbol.name x)) []
 
   
 and tree_of_dec dec =
   match dec with
-  | VarDec (v, t, i)          -> mktr "VarDec" [ tree_of_symbol v;
-                                                 tree_of_option tree_of_symbol t;
-                                                 tree_of_lexp i ]
+  | VarDec vardec -> tree_of_typed tree_of_vardec vardec
+
+and tree_of_vardec (v, t, i) =
+  mktr "VarDec" [ tree_of_symbol v;
+                  tree_of_option tree_of_symbol t;
+                  tree_of_lexp i ]
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
