@@ -1,5 +1,9 @@
 (* absyn.ml *)
 
+type symbol = Symbol.symbol
+[@@deriving show]
+
+
 type exp =
   | BoolExp       of bool
   | IntExp        of int
@@ -8,6 +12,8 @@ type exp =
   | BinaryExp     of (lexp * binary_op * lexp)
   | WhileExp      of (lexp * lexp)
   | BreakExp
+  | ExpSeq        of lexp list
+  | CallExp       of symbol * lexp list
   | VarExp        of lvar
   | LetExp        of ldec list * lexp
   [@@deriving show]

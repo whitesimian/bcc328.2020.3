@@ -42,16 +42,16 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
-     - [ ] function call
+     - [x] function call   (Artur - PR #57)
      - [ ] if
      - [x] while
      - [x] break (Romildo)
      - [x] let (Felipe)
-     - [ ] sequence
+     - [x] sequence (RodrigoJuliano #PR60)
    - Variables
-     - [x] simple variable (Felipe)
+     - [x] simple (Felipe - PR #55)
    - Declarations
-     - [x] variable (Felipe)
+     - [x] variable (Felipe - PR #55)
 
 - Conversion from abstract syntax tree to generic tree
    - Expressions
@@ -63,16 +63,16 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
-     - [ ] function call
+     - [x] function call  (Artur - PR #57)
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [x] let (Felipe)
-     - [ ] sequence
+     - [x] let (Felipe - PR #55)
+     - [x] sequence (RodrigoJuliano #PR60)
    - Variables
-     - [x] simple variable (Felipe)
+     - [x] simple variable (Felipe - PR #55)
    - Declarations
-     - [x] variable (Felipe)
+     - [x] variable (Felipe - PR #55)
 
 - Parser (production rules)
    - Expressions
@@ -84,16 +84,16 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
-     - [ ] function call
+     - [x] function call   (Artur - PR #57)
      - [ ] if
      - [x] while
      - [x] break (Romildo)
-     - [x] let (Felipe)
-     - [ ] sequence
+     - [x] let (Felipe - PR #55)
+     - [x] sequence (RodrigoJuliano #PR60)
    - Variables
-     - [x] simple variable (Felipe)
+     - [x] simple variable (Felipe - PR #55)
    - Declarations
-     - [x] variable (Felipe)
+     - [x] variable (Felipe - PR #55)
 
 - Parser tests (expects tests for the parser)
    - Expressions

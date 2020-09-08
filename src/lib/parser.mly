@@ -78,15 +78,24 @@ exp:
 | l=exp OR r=exp                          {$loc, BinaryExp (l, Or, r)}
 | WHILE t=exp DO b=exp                    {$loc, WhileExp (t, b)}
 | BREAK                                   {$loc, BreakExp}
+| f=ID LPAREN p=exp_list RPAREN			      {$loc, CallExp (f, p)} 
+| LPAREN es=exp_seq RPAREN                {$loc, ExpSeq es}
 | x=var                                   {$loc, VarExp x}
 | LET x=list(dec) IN e=exp                {$loc, LetExp (x, e)}
 
+(* semicolon separted sequence of expressions *)
+exp_seq:
+| es=separated_list(SEMI, exp)            {es}
+
+(* function call arguments *)
+exp_list: 
+| opt=separated_list(COMMA, exp)          {opt}
+
 var:
-| VAR x=ID                                {$loc, SimpleVar x }
+| x=ID                                    {$loc, SimpleVar x }
 
 dec:
 | VAR x=ID  t=optionaltype EQ e=exp       {$loc, VarDec (x, t, e) }
 
 optionaltype:
 | ot=option(COLON t=ID {t})               {ot}
-
