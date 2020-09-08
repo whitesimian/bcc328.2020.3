@@ -4,6 +4,10 @@ open Absyn
 
 (* Helper functions *)
 
+let name = Symbol.name
+let map  = List.map
+
+
 (* Format arguments according to a format string resulting in a string *)
 let sprintf = Format.sprintf
 
@@ -43,6 +47,7 @@ let rec tree_of_exp exp =
   | WhileExp (t, b)           -> mktr "WhileExp" [tree_of_lexp t; tree_of_lexp b]
   | BreakExp                  -> mktr "BreakExp" []
   | ExpSeq seq                -> mktr "ExpSeq" (List.map tree_of_lexp seq)
+  | CallExp (f, xs)           -> mktr "CallExp" [mktr (name f) []; mktr "Args" (List.map tree_of_lexp xs)]
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
