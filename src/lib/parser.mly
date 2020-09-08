@@ -6,6 +6,7 @@
 
 %token                 EOF
 %token <bool>          LITBOOL
+%token <string>        LITSTRING
 %token <int>           LITINT
 %token <float>         LITREAL
 %token <Symbol.symbol> ID
@@ -60,6 +61,7 @@ exp:
 | x=LITBOOL                                    {$loc, BoolExp x}
 | x=LITINT                                     {$loc, IntExp x}
 | x=LITREAL                                    {$loc, RealExp x}
+| x=LITSTRING                                  {$loc, StringExp x}
 | MINUS e=exp             %prec UMINUS         {$loc, NegativeExp e}
 | l=exp PLUS r=exp                             {$loc, BinaryExp (l, Plus, r)}
 | l=exp MINUS r=exp                            {$loc, BinaryExp (l, Minus, r)}

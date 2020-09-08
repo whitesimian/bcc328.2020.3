@@ -50,6 +50,7 @@ let rec tree_of_exp exp =
   match exp with
   | BoolExp x                 -> mktr (sprintf "BoolExp %b" x) []
   | IntExp x                  -> mktr (sprintf "IntExp %i" x) []
+  | StringExp x               -> mktr (sprintf "StringExp %s" x) []
   | RealExp x                 -> mktr (sprintf "RealExp %f" x) []
   | NegativeExp e             -> mktr "NegativeExp" [tree_of_lexp e]
   | BinaryExp (l, op, r)      -> mktr (sprintf "BinaryOp %s" (stringfy_op op)) [tree_of_lexp l; tree_of_lexp r]
