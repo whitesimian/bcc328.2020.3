@@ -3,7 +3,6 @@
 type symbol = Symbol.symbol
 [@@deriving show]
 
-
 type exp =
   | BoolExp       of bool
   | IntExp        of int
@@ -16,9 +15,6 @@ type exp =
   | CallExp       of symbol * lexp list
   | VarExp        of lvar
   | LetExp        of ldec list * lexp
-  [@@deriving show]
-
-and lexp = exp Location.loc  (* exp anotated with a location *)
   [@@deriving show]
  
 and binary_op = 
@@ -42,11 +38,15 @@ and var =
   | SimpleVar     of Symbol.symbol  
   [@@deriving show]
 
-and lvar = var Location.loc
-  [@@deriving show]
-
 and dec =
   | VarDec        of Symbol.symbol * Symbol.symbol option * lexp
+  [@@deriving show]
+
+and lexp = exp Location.loc  (* exp anotated with a location *)
+  [@@deriving show]
+
+and lvar = var Location.loc
+  [@@deriving show]
 
 and ldec = dec Location.loc
   [@@deriving show]

@@ -9,7 +9,6 @@
 %token <int>           LITINT
 %token <float>         LITREAL
 %token <Symbol.symbol> ID
-
 %token                 PLUS
 %token                 MINUS
 %token                 TIMES
@@ -81,7 +80,7 @@ exp:
 | f=ID LPAREN p=exp_list RPAREN			      {$loc, CallExp (f, p)} 
 | LPAREN es=exp_seq RPAREN                {$loc, ExpSeq es}
 | x=var                                   {$loc, VarExp x}
-| LET x=list(dec) IN e=exp                {$loc, LetExp (x, e)}
+| LET d=list(dec) IN e=exp                {$loc, LetExp (d, e)}
 
 (* semicolon separted sequence of expressions *)
 exp_seq:
@@ -91,11 +90,13 @@ exp_seq:
 exp_list: 
 | opt=separated_list(COMMA, exp)          {opt}
 
+(* variables *)
 var:
-| x=ID                                    {$loc, SimpleVar x }
+| x=ID                                    {$loc, SimpleVar x}
 
+(* declarations *)
 dec:
-| VAR x=ID  t=optionaltype EQ e=exp       {$loc, VarDec (x, t, e) }
+| VAR x=ID  t=optional_type EQ e=exp      {$loc, VarDec (x, t, e)}
 
-optionaltype:
+optional_type:
 | ot=option(COLON t=ID {t})               {ot}

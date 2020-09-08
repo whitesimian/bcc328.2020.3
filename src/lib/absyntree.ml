@@ -18,7 +18,14 @@ let flat_nodes tree =
 (* Build a singleton tree from a string *)
 let mktr s = Tree.mkt [s]
 
+(* Convert a symbol to a general tree *)
 let tree_of_symbol s = mktr (Symbol.name s) []
+
+(* Convert an option to a general tree *)
+let tree_of_option conversion_function opt =
+  match opt with
+  | None   -> Tree.empty
+  | Some v -> conversion_function v
 
 (* Convert a binary operator to a string *)
 let stringfy_op op =
@@ -59,14 +66,9 @@ and tree_of_var var =
 
 and tree_of_dec dec =
   match dec with
-  | VarDec (x, y, z)          -> mktr "VarDec" [mktr (sprintf "%s" (Symbol.name x)) [];
-                                                 tree_of_option tree_of_symbol y;
-                                                 tree_of_lexp z]
-
-and tree_of_option f opt =
-  match opt with
-          | None              -> Tree.empty
-          | Some v            -> f v
+  | VarDec (v, t, i)          -> mktr "VarDec" [ tree_of_symbol v;
+                                                 tree_of_option tree_of_symbol t;
+                                                 tree_of_lexp i ]
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
