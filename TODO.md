@@ -18,7 +18,7 @@ Significant contributions to the implementation will be used to assign a grade t
    - [x] punctuation symbols (Arilton - PR#34, Artur-PR#15)
    - [x] keyworkds (Felipe - PR#36)
    - [x] identifiers (Felipe - PR#36)
-   
+
 - Lexer tests
    - [x] spaces
    - [x] line comments
@@ -115,3 +115,39 @@ Significant contributions to the implementation will be used to assign a grade t
      - [ ] simple variable
    - Declarations
      - [ ] variable
+
+- Type representation
+  - [x] void
+  - [x] boolean
+  - [x] integer
+  - [ ] real
+  - [ ] string
+
+- Semantic Analysis
+  - Internal representation of types
+    - [x] void
+    - [x] bool
+    - [ ] int
+    - [ ] real
+    - [ ] string
+
+  - Semantic rules
+    - Expressions
+       - [x] boolean constant
+       - [ ] integer constant
+       - [ ] real constant
+       - [ ] string constant
+       - [ ] variable (**wait**)
+       - [ ] unary operation
+       - [ ] binary operation
+       - [ ] assignment (**wait**)
+       - [ ] function call (**wait**)
+       - [ ] if
+       - [ ] while
+       - [ ] break (**wait**)
+       - [ ] let (**wait**)
+       - [ ] sequence
+     - Variables
+       - [ ] simple variable (**wait**)
+     - Declarations
+       - [ ] variable (**wait**)

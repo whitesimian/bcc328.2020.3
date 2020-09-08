@@ -3,7 +3,14 @@
 type symbol = Symbol.symbol
 [@@deriving show]
 
-type exp =
+(* AST annotated with its type *)
+type 'a typed = 'a * Type.ty option ref
+[@@deriving show]
+
+type exp = exp_basic typed
+[@@deriving show]
+
+and exp_basic =
   | BoolExp       of bool
   | IntExp        of int
   | StringExp     of string
@@ -18,8 +25,8 @@ type exp =
   | VarExp        of lvar
   | LetExp        of ldec list * lexp
   [@@deriving show]
- 
-and binary_op = 
+
+and binary_op =
   | Plus
   | Minus
   | Times
@@ -37,11 +44,14 @@ and binary_op =
   [@@deriving show]
 
 and var =
-  | SimpleVar     of Symbol.symbol  
+  | SimpleVar     of Symbol.symbol
   [@@deriving show]
 
 and dec =
-  | VarDec        of Symbol.symbol * Symbol.symbol option * lexp
+  | VarDec of vardec typed
+  [@@deriving show]
+
+and vardec = Symbol.symbol * Symbol.symbol option * lexp
   [@@deriving show]
 
 and lexp = exp Location.loc  (* exp anotated with a location *)
@@ -52,3 +62,6 @@ and lvar = var Location.loc
 
 and ldec = dec Location.loc
   [@@deriving show]
+
+(* Annotate an ast with a dummy type representation *)
+let dummyt ast = (ast, ref None)
