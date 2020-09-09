@@ -5,6 +5,7 @@ type ty =
   | VOID
   | BOOL
   | INT
+  | REAL
 [@@deriving show]
 
 (* type compatibility *)
@@ -13,6 +14,7 @@ let coerceable a b =
   | VOID , VOID -> true
   | BOOL , BOOL -> true
   | INT  , INT  -> true
+  | REAL , REAL -> true
   | _           -> false
 
 (* general tree from internal type representation *)
@@ -20,4 +22,5 @@ let tree_of = function
   | VOID -> Tree.mkt "VOID" []
   | BOOL -> Tree.mkt "BOOL" []
   | INT  -> Tree.mkt "INT"  []
+  | REAL -> Tree.mkt "REAL" []
 
