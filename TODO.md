@@ -127,14 +127,14 @@ Significant contributions to the implementation will be used to assign a grade t
   - Internal representation of types
     - [x] void
     - [x] bool
-    - [ ] int
+    - [x] int (Artur)
     - [ ] real
     - [ ] string
 
   - Semantic rules
     - Expressions
        - [x] boolean constant
-       - [ ] integer constant
+       - [x] integer constant (Artur)
        - [ ] real constant
        - [ ] string constant
        - [ ] variable (**wait**)
