@@ -34,6 +34,9 @@ let main () =
     print_endline "Semantic analysis:";
     print_endline "============================================================";
     Semantic.semantic ast;
+    let tree = Absyntree.flat_nodes (Absyntree.tree_of_lexp ast) in
+    let boxtree = Tree.box_of_tree tree in
+    print_endline (Box.string_of_box boxtree);
     match ast with
     | (_, (_, { contents = Some ty })) ->
        print_endline (Type.show_ty ty)
