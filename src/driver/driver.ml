@@ -33,15 +33,11 @@ let main () =
     print_endline (Box.string_of_box boxtree);
     print_endline "Semantic analysis:";
     print_endline "============================================================";
-    Semantic.semantic ast;
+    let ast_type = Semantic.semantic ast in
     let tree = Absyntree.flat_nodes (Absyntree.tree_of_lexp ast) in
     let boxtree = Tree.box_of_tree tree in
     print_endline (Box.string_of_box boxtree);
-    match ast with
-    | (_, (_, { contents = Some ty })) ->
-       print_endline (Type.show_ty ty)
-    | _ ->
-       Error.fatal "cannot determine type of program"
+    print_endline (Type.show_ty ast_type)
   with
   | Error.Error (loc, msg) ->
      Format.printf "%a error: %s\n" Location.pp_location loc msg;
