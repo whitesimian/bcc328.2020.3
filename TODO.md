@@ -129,14 +129,14 @@ Significant contributions to the implementation will be used to assign a grade t
     - [x] bool
     - [x] int (Artur)
     - [x] real (Daniela)
-    - [ ] string
+    - [x] string (Gabriel Lana)
 
   - Semantic rules
     - Expressions
        - [x] boolean constant
        - [x] integer constant (Artur)
        - [x] real constant (Daniela)
-       - [ ] string constant
+       - [x] string constant (Gabriel Lana)
        - [ ] variable (**wait**)
        - [ ] unary operation
        - [ ] binary operation

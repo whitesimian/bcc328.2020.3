@@ -8,9 +8,10 @@ type env = [%import: Env.env]
 
 let rec check_exp {venv; tenv; inloop} (pos, (exp, ty)) =
   match exp with
-  | A.BoolExp _ -> ty := Some T.BOOL
-  | A.IntExp  _ -> ty := Some T.INT
-  | A.RealExp _ -> ty := Some T.REAL
+  | A.BoolExp _   -> ty := Some T.BOOL
+  | A.IntExp  _   -> ty := Some T.INT
+  | A.RealExp _   -> ty := Some T.REAL
+  | A.StringExp _ -> ty := Some T.STRING
   | _ -> Error.fatal "unimplemented"
 
 let semantic program =
