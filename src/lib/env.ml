@@ -9,8 +9,11 @@ type entry =
   [@@deriving show]
 
 let standard_types =
-  [ ("void",   T.VOID )
-  ; ("bool",   T.BOOL )
+  [ ("void", T.VOID )
+  ; ("bool", T.BOOL )
+  ; ("int", T.INT )
+  ; ("real", T.REAL )
+  ; ("string", T.STRING )
   ]
 
 let standard_functions =
