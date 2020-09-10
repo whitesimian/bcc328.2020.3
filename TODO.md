@@ -38,7 +38,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] integer constant
      - [x] real constant (Romildo)
      - [x] string constant (Gabriel - PR #14)
-     - [ ] variable
+     - [x] variable (Felipe - PR #55))
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
@@ -59,7 +59,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] integer constant
      - [x] real constant (Romildo)
      - [x] string constant (Gabriel - PR #14)
-     - [ ] variable
+     - [x] variable (Felipe - PR #55)
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
@@ -80,7 +80,7 @@ Significant contributions to the implementation will be used to assign a grade t
      - [x] integer constant
      - [x] real constant (Romildo)
      - [x] string constant (Gabriel - PR #14)
-     - [ ] variable
+     - [x] variable (Felipe - PR #55)
      - [x] unary operation  (Fabricio - PR #53)
      - [x] binary operation  (Fabricio - PR #53)
      - [ ] assignment
@@ -116,13 +116,6 @@ Significant contributions to the implementation will be used to assign a grade t
    - Declarations
      - [ ] variable
 
-- Type representation
-  - [x] void
-  - [x] boolean
-  - [x] integer
-  - [ ] real
-  - [ ] string
-
 - Semantic Analysis
   - Internal representation of types
     - [x] void
@@ -145,9 +138,9 @@ Significant contributions to the implementation will be used to assign a grade t
        - [ ] if
        - [ ] while
        - [ ] break (**wait**)
-       - [ ] let (**wait**)
+       - [x] let
        - [ ] sequence
      - Variables
        - [ ] simple variable (**wait**)
      - Declarations
-       - [ ] variable (**wait**)
+       - [x] variable
