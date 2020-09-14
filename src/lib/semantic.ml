@@ -27,7 +27,7 @@ let type_mismatch loc expected found =
 let look env category id pos =
   match S.look id env with
   | Some x -> x
-  | None -> undefined pos category id
+  | None -> undefined pos category id  (* === REPORTA ERRO CASO A VARIÁVEL NÃO EXISTA === *)
 
 let tylook tenv id pos =
   look tenv "type" id pos
@@ -35,7 +35,7 @@ let tylook tenv id pos =
 let varlook venv id pos =
   match look venv "variable" id pos with
   | VarEntry t -> t
-  | FunEntry _ -> misdefined pos "variable" id
+  | FunEntry _ -> misdefined pos "variable" id  (* === REPORTA ERRO: NOME ASSOCIADO COM FUNÇÃO === *)
 
 let funlook venv id pos =
   match look venv "function" id pos with
@@ -63,6 +63,19 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.RealExp _ -> set tref T.REAL
   | A.StringExp _ -> set tref T.STRING
   | A.LetExp (decs, body) -> check_exp_let env pos tref decs body
+  | A.VarExp v -> check_var env v tref
+  | A.AssignExp (v, e) -> let tv = check_var env v tref in
+                          let te = check_exp env e in
+                            begin
+                              compatible te tv pos;
+                              T.VOID
+                            end
+  | _ -> Error.fatal "unimplemented"
+
+and check_var env (pos, v) tref =
+  match v with
+  | A.SimpleVar id -> (let t = varlook env.venv id pos in
+                      set tref t)
   | _ -> Error.fatal "unimplemented"
 
 and check_exp_let env pos tref decs body =

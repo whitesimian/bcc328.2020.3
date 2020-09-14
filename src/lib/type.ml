@@ -17,7 +17,7 @@ let coerceable a b =
   | INT  , INT      -> true
   | REAL , REAL     -> true
   | STRING , STRING -> true
-  | _           -> false
+  | _               -> false
 
 (* general tree from internal type representation *)
 let tree_of = function
