@@ -27,7 +27,7 @@ let type_mismatch loc expected found =
 let look env category id pos =
   match S.look id env with
   | Some x -> x
-  | None -> undefined pos category id  (* === REPORTA ERRO CASO A VARIÁVEL NÃO EXISTA === *)
+  | None -> undefined pos category id
 
 let tylook tenv id pos =
   look tenv "type" id pos
@@ -35,7 +35,7 @@ let tylook tenv id pos =
 let varlook venv id pos =
   match look venv "variable" id pos with
   | VarEntry t -> t
-  | FunEntry _ -> misdefined pos "variable" id  (* === REPORTA ERRO: NOME ASSOCIADO COM FUNÇÃO === *)
+  | FunEntry _ -> misdefined pos "variable" id
 
 let funlook venv id pos =
   match look venv "function" id pos with
