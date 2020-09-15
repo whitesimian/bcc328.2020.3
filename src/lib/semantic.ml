@@ -64,6 +64,9 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.StringExp _ -> set tref T.STRING
   | A.LetExp (decs, body) -> check_exp_let env pos tref decs body
   | A.VarExp v -> set tref (check_var env v)
+  | A.AssignExp (var, exp) ->
+      compatible (check_exp env exp) (check_var env var) pos;
+      set tref T.VOID
   | _ -> Error.fatal "unimplemented"
 
 and check_exp_let env pos tref decs body =
