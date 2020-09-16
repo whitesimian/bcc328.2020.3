@@ -98,20 +98,20 @@ let rec check_exp env (pos, (exp, tref)) =
         | _ -> type_mismatch pos T.REAL v
       end
 
-  | A.ExpSeq le -> check_exp_list env le
+  | A.ExpSeq le -> check_exp_list env le tref
 
   | A.WhileExp (t, b) -> let env' = {env with inloop = true} in
-      ignore(check_exp env' t); ignore(check_exp env' b); T.VOID
+      ignore(check_exp env' t); ignore(check_exp env' b); set tref T.VOID
 
-  | A.BreakExp -> match env.inloop with | true -> T.VOID | _ -> Error.error pos "Break error: break outside loop"
+  | A.BreakExp -> match env.inloop with | true -> set tref T.VOID | _ -> Error.error pos "Break error: break outside loop"
 
   | _ -> Error.fatal "unimplemented"
 
-and check_exp_list env le =
+and check_exp_list env le tref =
   match le with
-    | []   -> T.VOID
+    | []   -> set tref T.VOID
     | [e]  -> check_exp env e
-    | h::t -> ignore(check_exp env h); check_exp_list env t
+    | h::t -> ignore(check_exp env h); check_exp_list env t tref
 
 and check_exp_let env pos tref decs body =
   let env' = List.fold_left check_dec env decs in
