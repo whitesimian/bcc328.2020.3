@@ -63,7 +63,55 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.RealExp _ -> set tref T.REAL
   | A.StringExp _ -> set tref T.STRING
   | A.LetExp (decs, body) -> check_exp_let env pos tref decs body
+  | A.BinaryExp (lexp, op, rexp) -> 
+      let type_lexp = check_exp env lexp in
+      let type_rexp = check_exp env rexp in
+      begin match op with
+        | A.Plus | A.Minus | A.Times | A.Div | A.Mod | A.Power ->
+          begin match type_lexp, type_rexp with
+            | T.INT, T.REAL | T.REAL, T.INT | T.REAL, T.REAL  -> set tref T.REAL
+            | T.INT, T.INT                                    -> set tref T.INT
+            | _                                               -> type_mismatch pos type_lexp type_rexp
+          end     
+
+        | A.Equal | A.NotEqual -> compatible type_rexp type_lexp pos; set tref T.BOOL
+
+        | A.GreaterThan | A.GreaterEqual | A.LowerThan | A.LowerEqual ->
+          begin match type_lexp with
+            | T.INT    -> (match type_rexp with T.INT    -> set tref T.BOOL | _ -> type_mismatch pos T.INT type_rexp)
+            | T.REAL   -> (match type_rexp with T.REAL   -> set tref T.BOOL | _ -> type_mismatch pos T.REAL type_rexp)
+            | T.STRING -> (match type_rexp with T.STRING -> set tref T.BOOL | _ -> type_mismatch pos T.STRING type_rexp)
+          end
+
+        | A.And | A.Or ->
+          begin match type_lexp, type_rexp with
+            | T.BOOL, T.BOOL -> set tref T.BOOL
+            | _ -> (match type_lexp with | T.BOOL -> type_mismatch pos T.BOOL type_rexp | _ -> type_mismatch pos T.BOOL type_lexp)
+          end
+
+        | _ -> Error.fatal "unimplemented"
+      end
+
+  | A.NegativeExp (e) -> let v = check_exp env e in 
+      begin match v with
+        | T.INT | T.REAL -> set tref v
+        | _ -> type_mismatch pos T.REAL v
+      end
+
+  | A.ExpSeq le -> check_exp_list env le
+
+  | A.WhileExp (t, b) -> let env' = {env with inloop = true} in
+      ignore(check_exp env' t); ignore(check_exp env' b); T.VOID
+
+  | A.BreakExp -> match env.inloop with | true -> T.VOID | _ -> Error.error pos "Break error: break outside loop"
+
   | _ -> Error.fatal "unimplemented"
+
+and check_exp_list env le =
+  match le with
+    | []   -> T.VOID
+    | [e]  -> check_exp env e
+    | h::t -> ignore(check_exp env h); check_exp_list env t
 
 and check_exp_let env pos tref decs body =
   let env' = List.fold_left check_dec env decs in
