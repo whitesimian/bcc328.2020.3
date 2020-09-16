@@ -98,7 +98,7 @@ let rec check_exp env (pos, (exp, tref)) =
         | _ -> type_mismatch pos T.REAL v
       end
 
-  | A.ExpSeq le -> check_exp_list env le tref
+  | A.ExpSeq le -> let t = check_exp_list env le in set tref t
 
   | A.WhileExp (t, b) -> let env' = {env with inloop = true} in
       ignore(check_exp env' t); ignore(check_exp env' b); set tref T.VOID
@@ -107,11 +107,11 @@ let rec check_exp env (pos, (exp, tref)) =
 
   | _ -> Error.fatal "unimplemented"
 
-and check_exp_list env le tref =
+and check_exp_list env le =
   match le with
-    | []   -> set tref T.VOID
+    | []   -> T.VOID
     | [e]  -> check_exp env e
-    | h::t -> ignore(check_exp env h); check_exp_list env t tref
+    | h::t -> ignore(check_exp env h); check_exp_list env t 
 
 and check_exp_let env pos tref decs body =
   let env' = List.fold_left check_dec env decs in
