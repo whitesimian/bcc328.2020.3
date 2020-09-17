@@ -9,7 +9,7 @@
   _FunDecGroup_ → _FunDec_  
   _FunDecGroup_ → _FunDec_ _FunDecGroup_  
     
-  _FunDec_ → `function` `(` _Params_ `)` `:` `id` `=` _Exp_  
+  _FunDec_ → `function` `id` `(` _Params_ `)` `:` `id` `=` _Exp_  
     
   _Params_ →  
   _Params_ → _Param_ _ParamsRest_  
