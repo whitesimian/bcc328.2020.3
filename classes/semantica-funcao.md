@@ -76,6 +76,7 @@
     - obtendo o tipo do corpo
     - verificar se o tipo do corpo é compatível com o tipo indicado para o resultado, reportando erro caso não o seja
 
+- O resultado da análise semântica do grupo de declaração de funções é o ambiente estendido para incluir os nomes e respectivas assinaturas das funções.
 
 # Análise semântica: chamada de função
 
@@ -92,7 +93,8 @@
 
 - Pesquisar o **nome** da função na tabela de variáveis e funções do ambiente:
   - se não encontrar: reportar erro
-  - se encontrar:
+  - se encontrar, mas não for uma função (pode ser uma variável): reportar erro
+  - se encontar, e for de fato uma função:
     - a **assinatura da função** (tipos dos parâmetros formais e do resultado) é obtida da tabela
     - analisar cada **argumento**, obtendo o tipo
     - verificar se o tipo de cada argumento é compatível com o tipo do parâmetro formal correspondente
@@ -102,12 +104,18 @@
       - haja mais argumentos do que parâmetros formais
     - o **tipo da expressão** é o tipo do resultado da função
 
-
 # Implementando e testando
 
 - Implemntar as regras semânticas da
   - declaração de função
   - chamada de função
+
+- Observe que será necessário alterações nos módulos:
+  - `Absyn`, para definir como as árvores sintáticas das construções será representada
+  - `Absyntree`, para definir como estas árvores sintáticas são convertidas para árvores genéricas, úteis para uma visualização bacana
+  - `Parse`, incluindo novos símbolos terminais e não terminais, e regras de produção para a representação das novas construções
+  - `Lexer`, para definir regras léxicas para os novos símbolos terminais (tokens)
+  - `Semantic`, definindo as regras semânticas aqui apresentadas.
 
 - Testar todos as possibilidades mencionadas nas regras semânticas.
 
@@ -182,4 +190,4 @@
      printint(negativo(7))
   ```
 
-- Submeter como _pull request_ no [repositório do github](https://github.com/romildo/bcc328.2020.3).
+- Submeter como _pull request_ no [repositório do github](https://github.com/romildo/bcc328.2020.3) até o dia 22/09 (terça-feira).
