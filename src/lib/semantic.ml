@@ -127,10 +127,10 @@ let rec check_exp env (pos, (exp, tref)) =
                          begin match e with
                          | Some ee -> (let telse = check_exp env ee in
                                        match telse with
-                                       | iftype when iftype = tthen -> telse
+                                       | iftype when iftype = tthen -> set tref telse
                                        | _                          -> type_mismatch pos tthen telse
                                       )
-                         | None    -> T.VOID
+                         | None    -> set tref T.VOID
                          end
 
   | A.VarExp v -> check_var env v tref
