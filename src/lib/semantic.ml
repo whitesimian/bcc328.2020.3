@@ -204,8 +204,8 @@ and check_dec_fun env pos ((name, params_list, type_ret, body), tref) =
  
   let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's type *)
     match tbody with
-    | rt       -> ignore(set tref rt); env'
-    | _        -> type_mismatch pos rt tbody
+    | rtp when rtp = rt -> ignore(set tref rt); env'
+    | _                 -> type_mismatch pos rt tbody
 
 (* Matching parameters' types passed into function call to its required types, as well as the number of parameters *)
 
