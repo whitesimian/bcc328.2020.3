@@ -54,6 +54,51 @@ let set reference value =
   reference := Some value;
   value
 
+(* Returns the variables' types in the function parameters list *)
+
+let rec get_formals lparams acc env pos =
+  match lparams with
+  | (n, t)::tail -> get_formals tail (acc @ [tylook env.tenv t pos]) env pos
+  | [(n, t)]     -> acc @ [tylook env.tenv t pos]
+  | []           -> acc
+
+(* Returns the variables' names in the function parameters list *)
+
+let rec get_formals_names lparams acc =
+  match lparams with
+  | (n, t)::tail -> get_formals_names tail (acc @ [S.name n])
+  | [(n, t)]     -> acc @ [S.name n]
+  | []           -> acc
+
+(* Checks if item is in the list *)
+
+let inList item lst = List.mem item lst
+
+(* Checks if a variable name was declared more than once in the function parameters' list *)
+
+let rec check_formals_names ln pos =
+  match ln with
+  | h::t -> if inList h t then Error.error pos "Variable '%s' was declared more than once in the function definition" h
+                          else check_formals_names t pos
+  | _    -> ()
+
+(* Adds all the parameters variables to the function's body environment *)
+
+let rec add_funvar2env lparam env pos =
+   match lparam with
+   | (n, t)::tail -> let venv' = S.enter n (VarEntry (tylook env.tenv t pos)) env.venv in
+                     let env' = {env with venv = venv'} in
+                     add_funvar2env tail env' pos
+   | [(n, t)]     -> let venv' = S.enter n (VarEntry (tylook env.tenv t pos)) env.venv in {env with venv = venv'}
+   | []           -> env
+
+(* Returns a new environment with the current function *)
+
+let check_params_type funcname lparams type_ret (env, pos) =
+  let formals = get_formals lparams [] env pos in
+    let venv' = S.enter funcname (FunEntry(formals, type_ret)) env.venv in
+    {env with venv = venv'}
+
 (* Checking expressions *)
 
 let rec check_exp env (pos, (exp, tref)) =
@@ -63,11 +108,8 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.RealExp _ -> set tref T.REAL
   | A.StringExp _ -> set tref T.STRING
   | A.LetExp (decs, body) -> check_exp_let env pos tref decs body
-  | A.VarExp v -> set tref (check_var env v)
-  | A.AssignExp (var, exp) ->
-      compatible (check_exp env exp) (check_var env var) pos;
-      set tref T.VOID
-  | _ -> Error.fatal "unimplemented"
+  | A.CallExp (n, le) -> check_exp_call env pos tref n le
+  | _ -> Error.fatal "unimplemented expression"
 
 and check_exp_let env pos tref decs body =
   let env' = List.fold_left check_dec env decs in
@@ -90,10 +132,41 @@ and check_dec_var env pos ((name, type_opt, init), tref) =
   let venv' = S.enter name (VarEntry tvar) env.venv in
   {env with venv = venv'}
 
+and check_dec_fun env pos ((name, params_list, type_ret, body), tref) =
+  let rt     = tylook env.tenv type_ret pos in                                          (* Checking return type *)
+  let env'   = check_params_type name params_list rt (env, pos) in                      (* Extended environment including the function *)
+  let lnames = get_formals_names params_list [] in
+  ignore(check_formals_names lnames pos);                                               (* Checking formals names *)
+
+  let envbody = add_funvar2env params_list env' pos in                                  (* Extended environment of the function's body *)                             
+ 
+  let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's type *)
+    match tbody with
+    | rt       -> ignore(set tref rt); env'
+    | _        -> type_mismatch pos rt tbody
+
+(* Matching parameters' types passed into function call to its required types, as well as the number of parameters *)
+
+and match_fun_param_types lexpr lparam env pos =
+  match lexpr, lparam with
+  | (eh::et, ph::pt) -> (let etype = check_exp env eh in
+                         match etype with
+                         | ft when ft = ph -> match_fun_param_types et pt env pos
+                         | _               -> type_mismatch pos ph etype
+                        )                        
+  | [], []           -> ()
+  | _                -> Error.error pos "Too many or too few parameters were passed into function's call"
+
+and check_exp_call env pos tref name lexpr =
+  let (params, result) = funlook env.venv name pos in  (* Look for function definition: parameter's list and return type *)
+  ignore(match_fun_param_types lexpr params env pos);
+  set tref result
+
 and check_dec env (pos, dec) =
   match dec with
   | A.VarDec x -> check_dec_var env pos x
-  | _ -> Error.fatal "unimplemented"
+  | A.FunDec x -> check_dec_fun env pos x
+  | _ -> Error.fatal "unimplemented declaration"
 
 and check_var env (pos, var) =
   match var with
