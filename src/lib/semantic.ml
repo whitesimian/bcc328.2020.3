@@ -122,6 +122,17 @@ let rec check_exp env (pos, (exp, tref)) =
 
   | A.BreakExp -> begin match env.inloop with | true -> set tref T.VOID | _ -> Error.error pos "Break error: break outside loop" end
 
+  | A.IfExp (c, i, e) -> ignore(check_exp env c);
+                         let tthen = check_exp env i in
+                         begin match e with
+                         | Some ee -> (let telse = check_exp env ee in
+                                       match telse with
+                                       | iftype when iftype = tthen -> telse
+                                       | _                          -> type_mismatch pos tthen telse
+                                      )
+                         | None    -> T.VOID
+                         end
+
   | A.VarExp v -> check_var env v tref
 
   | A.AssignExp (v, e) -> let tv = check_var env v tref in
