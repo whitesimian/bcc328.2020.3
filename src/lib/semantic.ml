@@ -58,16 +58,14 @@ let set reference value =
 
 let rec get_formals lparams acc env pos =
   match lparams with
-  | (n, t)::tail -> get_formals tail (acc @ [tylook env.tenv t pos]) env pos
-  | [(n, t)]     -> acc @ [tylook env.tenv t pos]
+  | (_, t)::tail -> get_formals tail (acc @ [tylook env.tenv t pos]) env pos
   | []           -> acc
 
 (* Returns the variables' names in the function parameters list *)
 
 let rec get_formals_names lparams acc =
   match lparams with
-  | (n, t)::tail -> get_formals_names tail (acc @ [S.name n])
-  | [(n, t)]     -> acc @ [S.name n]
+  | (n, _)::tail -> get_formals_names tail (acc @ [S.name n])
   | []           -> acc
 
 (* Checks if item is in the list *)
@@ -89,7 +87,6 @@ let rec add_funvar2env lparam env pos =
    | (n, t)::tail -> let venv' = S.enter n (VarEntry (tylook env.tenv t pos)) env.venv in
                      let env' = {env with venv = venv'} in
                      add_funvar2env tail env' pos
-   | [(n, t)]     -> let venv' = S.enter n (VarEntry (tylook env.tenv t pos)) env.venv in {env with venv = venv'}
    | []           -> env
 
 (* Returns a new environment with the current function *)
