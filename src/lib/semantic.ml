@@ -105,16 +105,19 @@ let rec check_exp env (pos, (exp, tref)) =
 
   | A.BreakExp -> begin match env.inloop with | true -> set tref T.VOID | _ -> Error.error pos "Break error: break outside loop" end
 
-  | A.IfExp (c, i, e) -> ignore(check_exp env c);
-                         let tthen = check_exp env i in
-                         begin match e with
-                         | Some ee -> (let telse = check_exp env ee in
-                                       match telse with
-                                       | iftype when iftype = tthen -> set tref telse
-                                       | _                          -> type_mismatch pos tthen telse
-                                      )
-                         | None    -> set tref T.VOID
-                         end
+  | A.IfExp (c, i, e) -> let cond = check_exp env c in
+                          match cond with
+                          | T.BOOL -> (let tthen = check_exp env i in
+                                        begin match e with
+                                        | Some ee -> (let telse = check_exp env ee in
+                                                      match telse with
+                                                      | iftype when iftype = tthen -> set tref telse
+                                                      | _                          -> type_mismatch pos tthen telse
+                                                    )
+                                        | None    -> set tref T.VOID
+                                        end)
+                          | _       ->  type_mismatch pos T.BOOL cond
+                         
 
   | _ -> Error.fatal "unimplemented"
 
