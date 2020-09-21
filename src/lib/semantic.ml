@@ -115,7 +115,11 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.ExpSeq le -> let t = check_exp_list env le in set tref t
 
   | A.WhileExp (t, b) -> let env' = {env with inloop = true} in
-      ignore(check_exp env' t); ignore(check_exp env' b); set tref T.VOID
+      let test = check_exp env' t in
+      begin match test with
+      | T.BOOL -> ignore(check_exp env' b); set tref T.VOID
+      | _      -> type_mismatch pos T.BOOL test
+      end      
 
   | A.BreakExp -> begin match env.inloop with | true -> set tref T.VOID | _ -> Error.error pos "Break error: break outside loop" end
 
