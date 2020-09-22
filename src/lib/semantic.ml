@@ -209,7 +209,7 @@ and check_dec_var env pos ((name, type_opt, init), tref) =
   let venv' = S.enter name (VarEntry tvar) env.venv in
   {env with venv = venv'}
 
-and check_dec_fun env pos ((name, params_list, type_ret, body), _) =
+and check_dec_fun env pos ((name, params_list, type_ret, body), tref) =
   let rt     = tylook env.tenv type_ret pos in                                          (* Checking return type *)
   let env'   = check_params_type name params_list rt (env, pos) in                      (* Extended environment including the function *)
   let lnames = get_formals_names params_list [] in
@@ -219,6 +219,7 @@ and check_dec_fun env pos ((name, params_list, type_ret, body), _) =
  
   let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's type *)
   compatible tbody rt pos; 
+  ignore(set tref rt);
   env'
 
 (* Matching parameters' types passed into function call to its required types, as well as the number of parameters *)
