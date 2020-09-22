@@ -56,9 +56,9 @@ let set reference value =
 
 (* Returns the variables' types in the function parameters list *)
 
-let rec get_formals lparams acc env pos =
+let rec get_formals_type lparams acc env pos =
   match lparams with
-  | (_, t)::tail -> get_formals tail (acc @ [tylook env.tenv t pos]) env pos
+  | (_, t)::tail -> get_formals_type tail (acc @ [tylook env.tenv t pos]) env pos
   | []           -> acc
 
 (* Returns the variables' names in the function parameters list *)
@@ -68,11 +68,11 @@ let rec get_formals_names lparams acc =
   | (n, _)::tail -> get_formals_names tail (acc @ [S.name n])
   | []           -> acc
 
-(* Checks if item is in the list *)
+(* Checks if an item is in the list *)
 
 let inList item lst = List.mem item lst
 
-(* Checks if a variable name was declared more than once in the function parameters' list *)
+(* Checks if a variable name was declared more than once in the function's parameters list *)
 
 let rec check_formals_names ln pos =
   match ln with
@@ -80,7 +80,7 @@ let rec check_formals_names ln pos =
                           else check_formals_names t pos
   | _    -> ()
 
-(* Adds all the parameters variables to the function's body environment *)
+(* Adds all the variables in the parameters list to the function's body environment *)
 
 let rec add_funvar2env lparam env pos =
    match lparam with
@@ -92,7 +92,7 @@ let rec add_funvar2env lparam env pos =
 (* Returns a new environment with the current function *)
 
 let check_params_type funcname lparams type_ret (env, pos) =
-  let formals = get_formals lparams [] env pos in
+  let formals = get_formals_type lparams [] env pos in
     let venv' = S.enter funcname (FunEntry(formals, type_ret)) env.venv in
     {env with venv = venv'}
 
@@ -130,26 +130,25 @@ and check_dec_var env pos ((name, type_opt, init), tref) =
   {env with venv = venv'}
 
 and check_dec_fun env pos ((name, params_list, type_ret, body), tref) =
-  let rt     = tylook env.tenv type_ret pos in                                          (* Checking return type *)
+  let rt     = tylook env.tenv type_ret pos in                                          (* Checking the function's return type *)
   let env'   = check_params_type name params_list rt (env, pos) in                      (* Extended environment including the function *)
   let lnames = get_formals_names params_list [] in
-  ignore(check_formals_names lnames pos);                                               (* Checking formals names *)
+  ignore(check_formals_names lnames pos);                                               (* Looking for repeated variables names *)
 
   let envbody = add_funvar2env params_list env' pos in                                  (* Extended environment of the function's body *)                             
  
-  let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's type *)
-    match tbody with
-    | rtp when rtp = rt -> ignore(set tref rt); env'
-    | _                 -> type_mismatch pos rt tbody
+  let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's return type *)
+  compatible tbody rt pos; 
+  ignore(set tref rt);
+  env'
 
-(* Matching parameters' types passed into function call to its required types, as well as the number of parameters *)
+(* Matches the types of the parameters passed in the function call with their corresponding types previously declared, as well as the number of parameters *)
 
 and match_fun_param_types lexpr lparam env pos =
   match lexpr, lparam with
   | (eh::et, ph::pt) -> (let etype = check_exp env eh in
-                         match etype with
-                         | ft when ft = ph -> match_fun_param_types et pt env pos
-                         | _               -> type_mismatch pos ph etype
+                         compatible etype ph pos;
+                         match_fun_param_types et pt env pos
                         )                        
   | [], []           -> ()
   | _                -> Error.error pos "Too many or too few parameters were passed into function's call"
