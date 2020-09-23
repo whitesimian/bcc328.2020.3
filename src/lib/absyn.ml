@@ -3,6 +3,9 @@
 type symbol = Symbol.symbol
 [@@deriving show]
 
+type 'a loc = 'a Location.loc
+[@@deriving show]
+
 (* AST annotated with its type *)
 type 'a typed = 'a * Type.ty option ref
 [@@deriving show]
@@ -55,13 +58,13 @@ and dec =
 and vardec = symbol * symbol option * lexp
   [@@deriving show]
 
-and lexp = exp Location.loc  (* exp anotated with a location *)
+and lexp = exp loc  (* exp anotated with a location *)
   [@@deriving show]
 
-and lvar = var Location.loc
+and lvar = var loc
   [@@deriving show]
 
-and ldec = dec Location.loc
+and ldec = dec loc
   [@@deriving show]
 
 and lsymbol = symbol loc
