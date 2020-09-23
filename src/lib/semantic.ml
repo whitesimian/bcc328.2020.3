@@ -20,7 +20,9 @@ let misdefined loc category id =
   Error.error loc "%s is not a %s" (S.name id) category
 
 let type_mismatch loc expected found =
-  Error.error loc "type mismatch: expected %s, found %s" (T.show_ty expected) (T.show_ty found)
+  Error.error loc "type mismatch: found %s, expecting %s"
+    (T.show_ty found)
+    (String.concat ", " (List.map T.show_ty expected))
 
 (* Searhing in symbol tables *)
 
@@ -46,7 +48,7 @@ let funlook venv id pos =
 
 let compatible ty1 ty2 pos =
   if not (T.coerceable ty1 ty2) then
-    type_mismatch pos ty2 ty1
+    type_mismatch pos [ty2] ty1
 
 (* Set the value in a reference of optional *)
 
