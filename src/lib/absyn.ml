@@ -45,14 +45,14 @@ and binary_op =
   [@@deriving show]
 
 and var =
-  | SimpleVar     of Symbol.symbol
+  | SimpleVar     of symbol
   [@@deriving show]
 
 and dec =
   | VarDec of vardec typed
   [@@deriving show]
 
-and vardec = Symbol.symbol * Symbol.symbol option * lexp
+and vardec = symbol * symbol option * lexp
   [@@deriving show]
 
 and lexp = exp Location.loc  (* exp anotated with a location *)
@@ -62,6 +62,9 @@ and lvar = var Location.loc
   [@@deriving show]
 
 and ldec = dec Location.loc
+  [@@deriving show]
+
+and lsymbol = symbol loc
   [@@deriving show]
 
 (* Annotate an ast with a dummy type representation *)
