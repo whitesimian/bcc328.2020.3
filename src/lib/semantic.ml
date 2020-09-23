@@ -123,6 +123,7 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.VarExp v -> set tref (check_var env v)
   | A.AssignExp (var, exp) -> set tref (check_assign_exp env pos var exp)
   | A.BinaryExp (left, op, right) -> set tref (check_binary_exp env pos op left right)
+  | A.NegativeExp exp -> set tref (check_neg_exp env pos exp)
   | A.SeqExp exp_list -> set tref (check_seq_exp env pos exp_list)
   | A.IfExp (test, e1, e2) -> set tref (check_if_exp env pos test e1 e2)
   | A.WhileExp (test, body) -> set tref (check_while_exp env pos test body)
@@ -152,6 +153,11 @@ and check_binary_exp env pos op left right =
      check_bool rtype (loc right);
      T.BOOL
 
+and check_neg_exp env pos exp =
+  let t = check_exp env exp in
+  if not (T.coerceable t T.INT || T.coerceable t T.REAL) then
+    type_mismatch pos [T.INT; T.REAL] t;
+  t
 
 and check_seq_exp env _pos exp_list =
   let rec check_sequence = function
