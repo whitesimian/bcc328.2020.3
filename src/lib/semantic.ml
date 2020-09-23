@@ -67,6 +67,7 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.LetExp (decs, body) -> set tref (check_let_exp env pos decs body)
   | A.VarExp v -> set tref (check_var env v)
   | A.AssignExp (var, exp) -> set tref (check_assign_exp env pos var exp)
+  | A.SeqExp exp_list -> set tref (check_seq_exp env pos exp_list)
   | _ -> Error.fatal "unimplemented"
 
 and check_let_exp env _pos decs body =
@@ -77,6 +78,15 @@ and check_assign_exp env pos var exp =
   compatible (check_exp env exp) (check_var env var) pos;
   T.VOID
 
+
+and check_seq_exp env _pos exp_list =
+  let rec check_sequence = function
+    | [] -> T.VOID
+    | [e] -> check_exp env e
+    | e::rest ->
+       ignore (check_exp env e);
+       check_sequence rest
+  in check_sequence exp_list
 
 (* Checking variables *)
 
