@@ -64,6 +64,47 @@ let check_real ty pos = compatible ty T.REAL pos
 let check_string ty pos = compatible ty T.STRING pos
 
 let check_void ty pos = compatible ty T.VOID pos
+
+let check_numeric t u pos1 pos2 =
+  if T.coerceable t T.INT then
+    if T.coerceable u T.INT then
+      T.INT
+    else if T.coerceable u T.REAL then
+      T.REAL
+    else
+      type_mismatch pos2 [T.INT; T.REAL] u
+  else if T.coerceable t T.REAL then
+    if T.coerceable u T.INT then
+      T.REAL
+    else if T.coerceable u T.REAL then
+      T.REAL
+    else
+      type_mismatch pos2 [T.INT; T.REAL] u
+  else
+    type_mismatch pos1 [T.INT; T.REAL] t
+
+let check_equal t u pos =
+  if T.coerceable t T.INT || T.coerceable t T.REAL then
+    (if not (T.coerceable u T.INT || T.coerceable u T.REAL) then
+       type_mismatch pos [T.INT; T.REAL] u
+    )
+  else if not (T.coerceable t u) || not (T.coerceable u t) then
+    Error.error pos "type mismatch: %s and %s" (T.show_ty t) (T.show_ty u);
+  T.BOOL
+
+let check_relational t u pos1 pos2 =
+  if T.coerceable t T.INT || T.coerceable t T.REAL then
+    (if not (T.coerceable u T.INT || T.coerceable u T.REAL) then
+       type_mismatch pos2 [T.INT; T.REAL] u
+    )
+  else if T.coerceable t T.STRING then
+    (if not (T.coerceable u T.STRING) then
+       type_mismatch pos2 [T.STRING] u
+    )
+  else
+    type_mismatch pos1 [T.INT; T.REAL; T.STRING] t;
+  T.BOOL
+
 (* Set the value in a reference of optional *)
 
 let set reference value =
@@ -81,6 +122,7 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.LetExp (decs, body) -> set tref (check_let_exp env pos decs body)
   | A.VarExp v -> set tref (check_var env v)
   | A.AssignExp (var, exp) -> set tref (check_assign_exp env pos var exp)
+  | A.BinaryExp (left, op, right) -> set tref (check_binary_exp env pos op left right)
   | A.SeqExp exp_list -> set tref (check_seq_exp env pos exp_list)
   | A.IfExp (test, e1, e2) -> set tref (check_if_exp env pos test e1 e2)
   | A.WhileExp (test, body) -> set tref (check_while_exp env pos test body)
@@ -94,6 +136,21 @@ and check_let_exp env _pos decs body =
 and check_assign_exp env pos var exp =
   compatible (check_exp env exp) (check_var env var) pos;
   T.VOID
+
+and check_binary_exp env pos op left right =
+  let ltype = check_exp env left in
+  let rtype = check_exp env right in
+  match op with
+  | A.Plus | A.Minus | A.Times | A.Div | A.Mod | A.Power ->
+     check_numeric ltype rtype (loc left) (loc right)
+  | A.Equal | A.NotEqual ->
+     check_equal ltype rtype pos
+  | A.GreaterThan | A.GreaterEqual | A.LowerThan | A.LowerEqual ->
+     check_relational ltype rtype (loc left) (loc right)
+  | A.And | A.Or ->
+     check_bool ltype (loc left);
+     check_bool rtype (loc right);
+     T.BOOL
 
 
 and check_seq_exp env _pos exp_list =
