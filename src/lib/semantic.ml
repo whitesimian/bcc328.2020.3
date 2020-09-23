@@ -66,14 +66,16 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.StringExp _ -> set tref T.STRING
   | A.LetExp (decs, body) -> set tref (check_let_exp env pos decs body)
   | A.VarExp v -> set tref (check_var env v)
-  | A.AssignExp (var, exp) ->
-      compatible (check_exp env exp) (check_var env var) pos;
-      set tref T.VOID
+  | A.AssignExp (var, exp) -> set tref (check_assign_exp env pos var exp)
   | _ -> Error.fatal "unimplemented"
 
 and check_let_exp env _pos decs body =
   let env' = List.fold_left check_dec env decs in
   check_exp env' body
+
+and check_assign_exp env pos var exp =
+  compatible (check_exp env exp) (check_var env var) pos;
+  T.VOID
 
 (* Checking declarations *)
 
