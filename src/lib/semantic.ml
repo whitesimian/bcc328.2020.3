@@ -50,6 +50,20 @@ let compatible ty1 ty2 pos =
   if not (T.coerceable ty1 ty2) then
     type_mismatch pos [ty2] ty1
 
+let compatible2 ty1 ty2 pos =
+  if T.coerceable ty2 ty1 then ty1
+  else if T.coerceable ty1 ty2 then ty2
+  else Error.error pos "type mismatch: %s and %s" (T.show_ty ty1) (T.show_ty ty2)
+
+let check_bool ty pos = compatible ty T.BOOL pos
+
+let check_int ty pos = compatible ty T.INT pos
+
+let check_real ty pos = compatible ty T.REAL pos
+
+let check_string ty pos = compatible ty T.STRING pos
+
+let check_void ty pos = compatible ty T.VOID pos
 (* Set the value in a reference of optional *)
 
 let set reference value =
