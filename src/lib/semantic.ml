@@ -77,6 +77,14 @@ and check_assign_exp env pos var exp =
   compatible (check_exp env exp) (check_var env var) pos;
   T.VOID
 
+
+(* Checking variables *)
+
+and check_var env (pos, var) =
+  match var with
+  | A.SimpleVar v -> varlook env.venv v pos
+  | _ -> Error.fatal "unimplemented"
+
 (* Checking declarations *)
 
 and check_dec_var env pos ((name, type_opt, init), tref) =
@@ -98,10 +106,7 @@ and check_dec env (pos, dec) =
   | A.VarDec x -> check_dec_var env pos x
   | _ -> Error.fatal "unimplemented"
 
-and check_var env (pos, var) =
-  match var with
-  | A.SimpleVar v -> varlook env.venv v pos
-  | _ -> Error.fatal "unimplemented"
+(* main semantic analysis function *)
 
 let semantic program =
   check_exp Env.initial program
