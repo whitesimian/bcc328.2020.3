@@ -83,6 +83,7 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.AssignExp (var, exp) -> set tref (check_assign_exp env pos var exp)
   | A.SeqExp exp_list -> set tref (check_seq_exp env pos exp_list)
   | A.IfExp (test, e1, e2) -> set tref (check_if_exp env pos test e1 e2)
+  | A.WhileExp (test, body) -> set tref (check_while_exp env pos test body)
   | _ -> Error.fatal "unimplemented"
 
 and check_let_exp env _pos decs body =
@@ -111,6 +112,11 @@ and check_if_exp env pos test e1 e2opt =
      compatible2 t1 (check_exp env e2) pos
   | None ->
      T.VOID
+
+and check_while_exp env _pos test body =
+  check_bool (check_exp env test) (loc test);
+  ignore (check_exp {env with inloop = true} body);
+  T.VOID
 
 (* Checking variables *)
 
