@@ -84,6 +84,7 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.SeqExp exp_list -> set tref (check_seq_exp env pos exp_list)
   | A.IfExp (test, e1, e2) -> set tref (check_if_exp env pos test e1 e2)
   | A.WhileExp (test, body) -> set tref (check_while_exp env pos test body)
+  | A.BreakExp -> set tref (check_break_exp env pos)
   | _ -> Error.fatal "unimplemented"
 
 and check_let_exp env _pos decs body =
@@ -117,6 +118,12 @@ and check_while_exp env _pos test body =
   check_bool (check_exp env test) (loc test);
   ignore (check_exp {env with inloop = true} body);
   T.VOID
+
+and check_break_exp env pos =
+  if env.inloop then
+    T.VOID
+  else
+    Error.error pos "break outside while loop"
 
 (* Checking variables *)
 
