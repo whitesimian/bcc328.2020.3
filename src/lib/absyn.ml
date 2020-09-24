@@ -3,6 +3,9 @@
 type symbol = Symbol.symbol
 [@@deriving show]
 
+type 'a loc = 'a Location.loc
+[@@deriving show]
+
 (* AST annotated with its type *)
 type 'a typed = 'a * Type.ty option ref
 [@@deriving show]
@@ -45,23 +48,33 @@ and binary_op =
   [@@deriving show]
 
 and var =
-  | SimpleVar     of Symbol.symbol
+  | SimpleVar     of symbol
   [@@deriving show]
 
 and dec =
   | VarDec of vardec typed
+  | FunDecGroup of fundec loc list
   [@@deriving show]
 
-and vardec = Symbol.symbol * Symbol.symbol option * lexp
+and vardec = symbol * symbol option * lexp
   [@@deriving show]
 
-and lexp = exp Location.loc  (* exp anotated with a location *)
+and fundec = symbol * parameter loc list * lsymbol * lexp * (Type.ty list * Type.ty) option ref
+  [@@deeriving show]
+
+and parameter = symbol * symbol
   [@@deriving show]
 
-and lvar = var Location.loc
+and lexp = exp loc  (* exp anotated with a location *)
   [@@deriving show]
 
-and ldec = dec Location.loc
+and lvar = var loc
+  [@@deriving show]
+
+and ldec = dec loc
+  [@@deriving show]
+
+and lsymbol = symbol loc
   [@@deriving show]
 
 (* Annotate an ast with a dummy type representation *)

@@ -45,17 +45,20 @@ let stringfy_op op =
   | And           -> "&&"
   | Or            -> "||"
 
-(* Convert an ast with a type annotation to a generic tree *)
-let tree_of_typed conversion_function (ast, ty_opt) =
+(* Convert an ast with an optional annotation to a generic tree *)
+let tree_of_ann_opt conversion_function annotation_to_string (ast, ty_opt) =
   let tree = conversion_function ast in
   match !ty_opt with
   | None -> tree
   | Some ty ->
-     let s = Type.show_ty ty in
+     let s = annotation_to_string ty in
      match tree with
      | Tree.Empty -> Tree.Node ([""; s], [])
      | Tree.Node (x, children) ->
         Tree.Node (List.append x [s], children)
+
+let tree_of_typed conversion_function x =
+  tree_of_ann_opt conversion_function Type.show_ty x
 
 (* Convert an expression to a generic tree *)
 let rec tree_of_exp exp =
@@ -86,11 +89,26 @@ and tree_of_var var =
 and tree_of_dec dec =
   match dec with
   | VarDec vardec -> tree_of_typed tree_of_vardec vardec
+  | FunDecGroup decs -> mktr "FunDecGroup" (map tree_of_lfundec decs)
 
 and tree_of_vardec (v, t, i) =
   mktr "VarDec" [ tree_of_symbol v;
                   tree_of_option tree_of_symbol t;
                   tree_of_lexp i ]
+
+and tree_of_fundec (f, p, r, b, sig_ref) =
+  Tree.mkt
+    ("FunDec" :: Option.to_list (Option.map string_of_signature !sig_ref))
+    [ tree_of_symbol f;
+      mktr "Parameters" (map tree_of_lparameter p);
+      tree_of_lsymbol r;
+      tree_of_lexp b ]
+
+and string_of_signature (tparams, tresult) =
+  String.concat "->" (List.map Type.show_ty (List.append tparams [tresult]))
+
+and tree_of_parameter (pname, ptype) =
+  mktr (sprintf "%s:%s" (name pname) (name ptype)) []
 
 (* Convert an anotated expression to a generic tree *)
 and tree_of_lexp (_, x) = tree_of_exp x
@@ -99,3 +117,8 @@ and tree_of_lvar (_, x) = tree_of_var x
 
 and tree_of_ldec (_, x) = tree_of_dec x
 
+and tree_of_lfundec (_, x) = tree_of_fundec x
+
+and tree_of_lparameter (_, x) = tree_of_parameter x
+
+and tree_of_lsymbol (_, x) = tree_of_symbol x
