@@ -104,7 +104,20 @@ var:
 
 (* declarations *)
 dec:
+| d=var_dec                                    {d}
+| ds=nonempty_list(fun_dec)                    {$loc, FunDecGroup ds}
+
+var_dec:
 | VAR x=ID t=optional_type EQ e=exp            {$loc, VarDec (dummyt (x, t, e))}
+
+fun_dec:
+| FUNCTION f=ID LPAREN p=separated_list(COMMA, parameter) RPAREN COLON t=lid EQ e=exp  {$loc, (f, p, t, e, ref None)}
+
+parameter:
+| name=ID COLON t=ID                           {$loc, (name, t)}
 
 optional_type:
 | ot=option(COLON t=ID {t})                    {ot}
+
+lid:
+| id=ID                                        {$loc, id}
