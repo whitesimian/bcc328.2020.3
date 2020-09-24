@@ -44,6 +44,7 @@
 %token                 VAR
 %token                 WHILE
 %token                 UMINUS
+%token                 FUNCTION
 
 %right                 OR
 %right                 AND

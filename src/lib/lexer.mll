@@ -66,6 +66,7 @@ rule token = parse
   | "do"              { DO }
   | "else"            { ELSE }
   | "end"             { END }
+  | "function"        { FUNCTION }
   | "if"              { IF }
   | "in"              { IN }
   | "let"             { LET }
