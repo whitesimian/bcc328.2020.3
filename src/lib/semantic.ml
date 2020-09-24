@@ -214,7 +214,43 @@ and check_dec_var env pos ((name, type_opt, init), tref) =
 and check_dec env (pos, dec) =
   match dec with
   | A.VarDec x -> check_dec_var env pos x
+  | A.FunDecGroup ds -> check_fun_dec_group env pos ds
   | _ -> Error.fatal "unimplemented"
+
+and check_fun_dec_group env pos ds =
+  let venv' = List.fold_left (check_function_signature env.tenv) env.venv ds in
+  let env' = {env with venv=venv'} in
+  List.iter (check_function_body env') ds;
+  env'
+
+and check_function_signature tenv venv (pos, (fname, params, (rpos, rtype), body, sig_ref)) =
+  ignore
+    (List.fold_left
+       (fun known_params (pos, (pname, _)) ->
+         if List.mem pname known_params then
+           Error.error pos "parameter name must be unique";
+         pname :: known_params)
+       []
+       params);
+  let ptypes = List.map (fun (pos,(_,ptype)) -> tylook tenv ptype pos) params in
+  let presult = tylook tenv rtype rpos in
+  sig_ref := Some (ptypes, presult);
+  S.enter fname (FunEntry (ptypes, presult)) venv
+
+and check_function_body env (pos, (fname, params, (rpos, rtype), body, sig_ref)) =
+  match !sig_ref with
+  | None -> Error.fatal "function signature should already be known"
+  | Some (tparams, tresult) ->
+     let venv' =
+       List.fold_left2
+         (fun venv (_, (pname, _)) ptype ->
+           S.enter pname (VarEntry ptype) venv)
+         env.venv
+         params
+         tparams
+     in
+     let tbody = check_exp {env with venv=venv'; inloop=false} body in
+     compatible tbody tresult (loc body)
 
 (* main semantic analysis function *)
 
