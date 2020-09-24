@@ -20,7 +20,7 @@ let coerceable a b =
   | _           -> false
 
 (* general tree from internal type representation *)
-let tree_of = function
+let tree_of_ty = function
   | VOID   -> Tree.mkt "VOID" []
   | BOOL   -> Tree.mkt "BOOL" []
   | INT    -> Tree.mkt "INT"  []
