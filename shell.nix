@@ -38,7 +38,15 @@ pkgs.stdenv.mkDerivation {
     # needed for ocaml-lsp-server
     pkgs.clang-tools
     pkgs.llvmPackages_latest.clang
-  
+
+    # needed for llvm bindings
+    pkgs.llvmPackages_latest.llvm
+    pkgs.python2Full
+    pkgs.pkg-config
+    pkgs.cmake
+    pkgs.zlib
+    pkgs.ncurses
+
     pkgs.opam
     pkgs.rlwrap
     pkgs.vscode

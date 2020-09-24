@@ -90,6 +90,20 @@ Installing some development languages, libraries and tools
   $ opam install utop
   ```
 
+- Install LLVM and CLang
+  - CLang (C/C++ compiler)
+    ```
+    $ sudo apt install clang
+    ```
+  - Dependencies for building OCaml LLVM bindings
+    ```
+    $ sudo apt install cmake m4 python2
+    ```
+  - LLVM bindings for OCaml
+    ```
+    $ opam install llvm
+    ```
+
 ## How to clean uneeded files
 
 ```
