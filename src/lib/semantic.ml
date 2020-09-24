@@ -242,7 +242,6 @@ and check_dec env (pos, dec) =
   match dec with
   | A.VarDec x -> check_dec_var env pos x
   | A.FunDec x -> check_dec_fun env pos x
-  | _ -> Error.fatal "unimplemented declaration"
 
 let semantic program =
   check_exp Env.initial program
