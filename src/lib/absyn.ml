@@ -53,9 +53,16 @@ and var =
 
 and dec =
   | VarDec of vardec typed
+  | FunDecGroup of fundec loc list
   [@@deriving show]
 
 and vardec = symbol * symbol option * lexp
+  [@@deriving show]
+
+and fundec = symbol * parameter loc list * lsymbol * lexp * (Type.ty list * Type.ty) option ref
+  [@@deeriving show]
+
+and parameter = symbol * symbol
   [@@deriving show]
 
 and lexp = exp loc  (* exp anotated with a location *)
