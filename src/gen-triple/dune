@@ -1,0 +1,5 @@
+(executable
+  (name gen_triple)
+  (libraries
+    llvm
+    llvm.analysis))
