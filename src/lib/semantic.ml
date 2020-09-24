@@ -189,7 +189,8 @@ and check_exp_list env le =
     | h::t -> ignore(check_exp env h); check_exp_list env t 
 
 and check_exp_let env pos tref decs body =
-  let env' = List.fold_left check_dec env decs in
+  let env' = List.fold_left check_dec env decs in        (* In case of 'FunDec', all functions were added *)
+  ignore(List.fold_left check_fun_variables env' decs);  (* Checks expressions inside the functions *)
   let tbody = check_exp env' body in
   set tref tbody
 
@@ -209,19 +210,24 @@ and check_dec_var env pos ((name, type_opt, init), tref) =
   let venv' = S.enter name (VarEntry tvar) env.venv in
   {env with venv = venv'}
 
-and check_dec_fun env pos ((name, params_list, type_ret, body), tref) =
-  let rt     = tylook env.tenv type_ret pos in                                          (* Checking return type *)
-  let env'   = check_params_type name params_list rt (env, pos) in                      (* Extended environment including the function *)
+and check_dec_fun env pos ((name, params_list, type_ret, _), _) =
+  let rt = tylook env.tenv type_ret pos in
   let lnames = get_formals_names params_list [] in
-  ignore(check_formals_names lnames pos);                                               (* Checking formals names *)
+  ignore(check_formals_names lnames pos);           (* Parameters names *)
+  check_params_type name params_list rt (env, pos)  (* Checks types and returns a new environment with the function *)
 
-  let envbody = add_funvar2env params_list env' pos in                                  (* Extended environment of the function's body *)                             
- 
-  let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's type *)
-  compatible tbody rt pos; 
-  ignore(set tref rt);
-  env'
-
+and check_fun_variables env (pos, dec) =
+  begin match dec with
+  | A.FunDec ((name, params_list, type_ret, body), tref) -> 
+    let rt = tylook env.tenv type_ret pos in
+    let envbody = add_funvar2env params_list env pos in                                  (* Extended environment of the function's body *)                             
+    let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's type *)
+    compatible tbody rt pos; 
+    ignore(set tref rt);
+    envbody
+  | _  -> env
+  end
+  
 (* Matching parameters' types passed into function call to its required types, as well as the number of parameters *)
 
 and match_fun_param_types lexpr lparam env pos =
@@ -242,6 +248,7 @@ and check_dec env (pos, dec) =
   match dec with
   | A.VarDec x -> check_dec_var env pos x
   | A.FunDec x -> check_dec_fun env pos x
+  (* exhaustive *)
 
 let semantic program =
   check_exp Env.initial program
