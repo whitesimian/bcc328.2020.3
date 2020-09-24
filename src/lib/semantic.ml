@@ -124,6 +124,7 @@ let rec check_exp env (pos, (exp, tref)) =
   | A.AssignExp (var, exp) -> set tref (check_assign_exp env pos var exp)
   | A.BinaryExp (left, op, right) -> set tref (check_binary_exp env pos op left right)
   | A.NegativeExp exp -> set tref (check_neg_exp env pos exp)
+  | A.CallExp (f, args) -> set tref (check_call_exp env pos f args)
   | A.SeqExp exp_list -> set tref (check_seq_exp env pos exp_list)
   | A.IfExp (test, e1, e2) -> set tref (check_if_exp env pos test e1 e2)
   | A.WhileExp (test, body) -> set tref (check_while_exp env pos test body)
@@ -158,6 +159,21 @@ and check_neg_exp env pos exp =
   if not (T.coerceable t T.INT || T.coerceable t T.REAL) then
     type_mismatch pos [T.INT; T.REAL] t;
   t
+
+and check_call_exp env pos fname args =
+  let (tparams, tresult) = funlook env.venv fname pos in
+  try
+    List.iter2
+      (fun arg tparam ->
+        ignore (compatible (check_exp env arg) tparam (loc arg)))
+      args
+      tparams;
+    tresult
+  with
+  | Invalid_argument _ ->
+     Error.error pos "function expected %i arguments, but was called with %i"
+       (List.length tparams)
+       (List.length args);
 
 and check_seq_exp env _pos exp_list =
   let rec check_sequence = function
