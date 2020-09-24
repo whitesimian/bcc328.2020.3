@@ -12,9 +12,11 @@ notifications:
   email: false
 
 before_install:
+  - apt search llvm
+  - clang --version
   - opam init -y --compiler=4.10.1
   - eval `opam config env`
-  - opam install -y dune ocamlfind menhir camomile ppx_import ppx_deriving ppx_expect
+  - opam install -y dune ocamlfind menhir camomile ppx_import ppx_deriving ppx_expect llvm
   - sudo chmod +x compile.sh
 
 matrix:
@@ -24,6 +26,10 @@ matrix:
       addons:
         apt:
           packages:
+            - llvm
+            - cmake
+            - m4
+            - python2
             - opam
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
