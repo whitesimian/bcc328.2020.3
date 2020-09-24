@@ -109,7 +109,8 @@ let rec check_exp env (pos, (exp, tref)) =
   | _ -> Error.fatal "unimplemented expression"
 
 and check_exp_let env pos tref decs body =
-  let env' = List.fold_left check_dec env decs in
+  let env' = List.fold_left check_dec env decs in        (* All functions and variables are added first *)
+  ignore(List.fold_left check_fun_variables env' decs);  (* Checks expressions inside the functions with the new environment *)
   let tbody = check_exp env' body in
   set tref tbody
 
@@ -129,18 +130,23 @@ and check_dec_var env pos ((name, type_opt, init), tref) =
   let venv' = S.enter name (VarEntry tvar) env.venv in
   {env with venv = venv'}
 
-and check_dec_fun env pos ((name, params_list, type_ret, body), tref) =
-  let rt     = tylook env.tenv type_ret pos in                                          (* Checking the function's return type *)
-  let env'   = check_params_type name params_list rt (env, pos) in                      (* Extended environment including the function *)
-  let lnames = get_formals_names params_list [] in
-  ignore(check_formals_names lnames pos);                                               (* Looking for repeated variables names *)
+  and check_dec_fun env pos ((name, params_list, type_ret, _), _) =
+    let rt = tylook env.tenv type_ret pos in                   (* Checking the function's return type *)
+    let lnames = get_formals_names params_list [] in
+    ignore(check_formals_names lnames pos);                    (* Parameters names *)
+    check_params_type name params_list rt (env, pos)           (* Checks types and returns a new environment with the function *)
 
-  let envbody = add_funvar2env params_list env' pos in                                  (* Extended environment of the function's body *)                             
- 
-  let tbody = check_exp envbody body in                                                 (* Checking if the body's return type matches the function's return type *)
-  compatible tbody rt pos; 
-  ignore(set tref rt);
-  env'
+and check_fun_variables env (pos, dec) =
+  begin match dec with
+  | A.FunDec ((name, params_list, type_ret, body), tref) -> 
+    let rt = tylook env.tenv type_ret pos in
+    let envbody = add_funvar2env params_list env pos in        (* Extended environment of the function's body *)                             
+    let tbody = check_exp envbody body in                      (* Checking if the body's return type matches the function's type *)
+    compatible tbody rt pos; 
+    ignore(set tref rt);
+    envbody
+  | _  -> env
+  end
 
 (* Matches the types of the parameters passed in the function call with their corresponding types previously declared, as well as the number of parameters *)
 
@@ -162,7 +168,7 @@ and check_dec env (pos, dec) =
   match dec with
   | A.VarDec x -> check_dec_var env pos x
   | A.FunDec x -> check_dec_fun env pos x
-  | _ -> Error.fatal "unimplemented declaration"
+  (* exhaustive *)
 
 and check_var env (pos, var) =
   match var with
